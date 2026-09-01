@@ -252,7 +252,7 @@ tbody tr:hover { background: #FAFAFA; }
 .cal-chip { font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 4px; line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 /* ── Clawback disabled state ── */
-#clawback-config.dimmed, #n-input-row.dimmed { opacity: 0.38; pointer-events: none; user-select: none; }
+#clawback-config.dimmed, #n-input-row.dimmed, #disc-config.dimmed { opacity: 0.38; pointer-events: none; user-select: none; }
 
 /* ── Page visibility ── */
 .page { display: none; }
@@ -972,11 +972,11 @@ tr.drag-over { border-top: 2px solid #2563EB; }
         <div style="margin-bottom:20px;">
           <div class="pricing-group-label">Discounting Price Mode <span class="req">*</span></div>
           <div class="radio-cards">
-            <div class="radio-card selected" onclick="discPickCard(this)">
+            <div class="radio-card selected" onclick="discSelectPriceMode(this,'instalment')">
               <div class="radio-card-top"><div class="radio-dot on"></div><div class="radio-card-title">By instalment discount</div></div>
               <div class="radio-card-desc">Discount is applied per instalment</div>
             </div>
-            <div class="radio-card" onclick="discPickCard(this)">
+            <div class="radio-card" onclick="discSelectPriceMode(this,'daily')">
               <div class="radio-card-top"><div class="radio-dot"></div><div class="radio-card-title">By daily accrued</div></div>
               <div class="radio-card-desc">Discount is accrued day by day</div>
             </div>
@@ -994,8 +994,8 @@ tr.drag-over { border-top: 2px solid #2563EB; }
           <div class="field-note">Auto Clawback adopts the same discounting method as Clawback.</div>
         </div>
 
-        <!-- Discounting Days -->
-        <div style="margin-bottom:20px;">
+        <!-- Discounting Days (only applies when price mode = By daily accrued) -->
+        <div id="disc-days-section" style="margin-bottom:20px;display:none;">
           <div class="pricing-group-label">Discounting Days <span class="req">*</span></div>
           <div class="radio-cards">
             <div class="radio-card selected" onclick="discPickCard(this)">
@@ -2878,10 +2878,6 @@ tr.drag-over { border-top: 2px solid #2563EB; }
                   <span style="background:#DBEAFE;color:#1D4ED8;font-size:12px;font-weight:600;padding:2px 9px;border-radius:4px;">Clawback</span>
                 </div>
                 <div style="font-size:11px;color:#9CA3AF;margin-top:5px;">Auto Clawback adopts the same method as Clawback.</div>
-              </div>
-              <div>
-                <div class="view-label" style="margin-bottom:4px;">Discounting Days</div>
-                <div style="font-size:13px;font-weight:600;color:#111827;">Due to due</div>
               </div>
               <div>
                 <div class="view-label" style="margin-bottom:4px;">Discounting Rate</div>
@@ -5491,8 +5487,9 @@ function selectMode(n) {
 function toggleDiscounting(el) {
   el.classList.toggle('off');
   const on = !el.classList.contains('off');
+  // Off → grey out the config (consistent with Auto Clawback), keeping it visible.
   const cfg = document.getElementById('disc-config');
-  if (cfg) cfg.style.display = on ? '' : 'none';
+  if (cfg) cfg.classList.toggle('dimmed', !on);
 }
 // Scope & Scenario are required groups — at least one box must stay checked.
 // Unchecking all shows an inline error (rather than silently turning discounting off).
@@ -5505,6 +5502,12 @@ function onDiscScenarioChange() {
   const any = [...document.querySelectorAll('.disc-scenario-chk')].some(b => b.checked);
   const err = document.getElementById('disc-scenario-err');
   if (err) err.style.display = any ? 'none' : '';
+}
+// Discounting Days only applies to the "By daily accrued" price mode; hidden for instalment.
+function discSelectPriceMode(el, mode) {
+  discPickCard(el);
+  const days = document.getElementById('disc-days-section');
+  if (days) days.style.display = (mode === 'daily') ? '' : 'none';
 }
 /* Lender Detail: editing Support Discounting on a live/ready funder raises a ticket. */
 function discViewEdit() {
