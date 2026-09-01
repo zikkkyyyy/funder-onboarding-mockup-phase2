@@ -855,39 +855,13 @@ tr.drag-over { border-top: 2px solid #2563EB; }
     <div class="section-card">
       <div class="section-header">
         <div class="section-title">AR Task</div>
-        <div class="section-sub">Set the Cutoff and Clawback AR tasks for this funder.</div>
+        <div class="section-sub">Set the AR Task ID for this funder.</div>
       </div>
       <div class="section-body">
-        <!-- Cutoff -->
-        <div style="font-size:12px;font-weight:700;color:#6B7280;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px;">Cutoff AR Task</div>
-        <div class="form-grid-3" style="margin-bottom:20px;">
+        <div class="form-grid">
           <div class="form-group">
-            <label class="form-label">Task ID</label>
-            <input class="form-input" id="s1-ar-cutoff-id" placeholder="e.g. AR-2024-00123" />
-          </div>
-          <div class="form-group">
-            <label class="form-label">Task Name</label>
-            <input class="form-input" id="s1-ar-cutoff-name" placeholder="e.g. Cutoff AR Task" />
-          </div>
-          <div class="form-group">
-            <label class="form-label">Transify Key</label>
-            <input class="form-input" id="s1-ar-cutoff-key" placeholder="e.g. cutoff_ar_send" />
-          </div>
-        </div>
-        <!-- Clawback -->
-        <div style="font-size:12px;font-weight:700;color:#6B7280;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px;">Clawback AR Task</div>
-        <div class="form-grid-3">
-          <div class="form-group">
-            <label class="form-label">Task ID</label>
-            <input class="form-input" id="s1-ar-clawback-id" placeholder="e.g. AR-2024-00456" />
-          </div>
-          <div class="form-group">
-            <label class="form-label">Task Name</label>
-            <input class="form-input" id="s1-ar-clawback-name" placeholder="e.g. Clawback AR Task" />
-          </div>
-          <div class="form-group">
-            <label class="form-label">Transify Key</label>
-            <input class="form-input" id="s1-ar-clawback-key" placeholder="e.g. clawback_ar_send" />
+            <label class="form-label">AR Task ID</label>
+            <input class="form-input" id="s1-artask-input" placeholder="e.g. AR-2024-00123" />
           </div>
         </div>
       </div>
@@ -1361,7 +1335,6 @@ tr.drag-over { border-top: 2px solid #2563EB; }
               <th style="min-width:170px;">File Generation</th>
               <th style="width:130px;">File Transfer Method</th>
               <th style="min-width:190px;">BD Ceph File Path</th>
-              
               <th class="col-portal" style="min-width:230px;">Investor Portal File Path</th>
               <th style="width:120px;text-align:center;">If Sync by Funding</th>
               <th style="width:120px;">Action</th>
@@ -1742,12 +1715,7 @@ tr.drag-over { border-top: 2px solid #2563EB; }
           <div class="rv-row"><span class="rv-label">Licensee</span><span class="rv-value">CCC</span></div>
           <div class="rv-row"><span class="rv-label">SPV Name</span><span class="rv-value">Stellar</span></div>
           <div class="rv-row"><span class="rv-label">Tranche</span><span class="rv-value">01</span></div>
-          <div class="rv-row"><span class="rv-label">Cutoff AR · Task ID</span><span class="rv-value">AR-2024-00123</span></div>
-          <div class="rv-row"><span class="rv-label">Cutoff AR · Task Name</span><span class="rv-value">Cutoff AR Task</span></div>
-          <div class="rv-row"><span class="rv-label">Cutoff AR · Transify Key</span><span class="rv-value">cutoff_ar_send</span></div>
-          <div class="rv-row"><span class="rv-label">Clawback AR · Task ID</span><span class="rv-value">AR-2024-00456</span></div>
-          <div class="rv-row"><span class="rv-label">Clawback AR · Task Name</span><span class="rv-value">Clawback AR Task</span></div>
-          <div class="rv-row"><span class="rv-label">Clawback AR · Transify Key</span><span class="rv-value">clawback_ar_send</span></div>
+          <div class="rv-row"><span class="rv-label">AR Task ID</span><span class="rv-value">AR-2024-00123</span></div>
           <div class="rv-row" style="align-items:flex-start;">
             <span class="rv-label" style="padding-top:4px;">Supported Tenors</span>
             <div style="display:flex;flex-wrap:wrap;gap:5px;">
@@ -1879,7 +1847,6 @@ tr.drag-over { border-top: 2px solid #2563EB; }
                 
                 <th style="min-width:160px;">File Generation</th>
                 <th style="min-width:160px;">BD Ceph File Path</th>
-                
                 <th style="min-width:200px;background:#EFF6FF;color:#1D4ED8;">Investor Portal File Path</th>
                 <th style="width:70px;text-align:center;">Sync</th>
               </tr></thead>
@@ -2215,10 +2182,6 @@ tr.drag-over { border-top: 2px solid #2563EB; }
             </div>
           </div>
           <div style="display:flex;gap:10px;align-items:center;">
-            <button id="btn-batch-adjust" class="btn-outline-sm" style="padding:9px 16px;font-size:13px;color:#374151;display:flex;align-items:center;gap:6px;" onclick="bspOpen()">
-              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h6"/><circle cx="19" cy="18" r="3"/><path d="M19 15v3m0 0v3m0-3h3m-3 0h-3" stroke-width="1.8"/></svg>
-              Create Sub Plan (Batch)
-            </button>
             <button class="btn-outline-sm" style="padding:9px 16px;font-size:13px;color:#374151;display:flex;align-items:center;gap:6px;" onclick="openImportJsonModal()">
               <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
               Import
@@ -2637,40 +2600,11 @@ tr.drag-over { border-top: 2px solid #2563EB; }
           </div>
           <div id="vi-artask-body">
             <div style="padding:18px 20px;">
-              <div style="font-size:12px;font-weight:700;color:#6B7280;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px;">Cutoff AR Task</div>
-              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px 24px;margin-bottom:22px;">
-                <div>
-                  <div class="view-label" style="margin-bottom:3px;">Task ID</div>
-                  <div class="art-view" data-k="cutoff-id" style="font-size:13px;color:#111827;font-weight:500;">AR-2024-00123</div>
-                  <input class="form-input art-input" data-k="cutoff-id" value="AR-2024-00123" style="display:none;width:100%;font-size:13px;" />
-                </div>
-                <div>
-                  <div class="view-label" style="margin-bottom:3px;">Task Name</div>
-                  <div class="art-view" data-k="cutoff-name" style="font-size:13px;color:#111827;font-weight:500;">Cutoff AR Task</div>
-                  <input class="form-input art-input" data-k="cutoff-name" value="Cutoff AR Task" style="display:none;width:100%;font-size:13px;" />
-                </div>
-                <div>
-                  <div class="view-label" style="margin-bottom:3px;">Transify Key</div>
-                  <div class="art-view" data-k="cutoff-key" style="font-size:13px;color:#111827;font-weight:500;">cutoff_ar_send</div>
-                  <input class="form-input art-input" data-k="cutoff-key" value="cutoff_ar_send" style="display:none;width:100%;font-size:13px;" />
-                </div>
-              </div>
-              <div style="font-size:12px;font-weight:700;color:#6B7280;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px;">Clawback AR Task</div>
               <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px 24px;">
                 <div>
-                  <div class="view-label" style="margin-bottom:3px;">Task ID</div>
-                  <div class="art-view" data-k="clawback-id" style="font-size:13px;color:#111827;font-weight:500;">AR-2024-00456</div>
-                  <input class="form-input art-input" data-k="clawback-id" value="AR-2024-00456" style="display:none;width:100%;font-size:13px;" />
-                </div>
-                <div>
-                  <div class="view-label" style="margin-bottom:3px;">Task Name</div>
-                  <div class="art-view" data-k="clawback-name" style="font-size:13px;color:#111827;font-weight:500;">Clawback AR Task</div>
-                  <input class="form-input art-input" data-k="clawback-name" value="Clawback AR Task" style="display:none;width:100%;font-size:13px;" />
-                </div>
-                <div>
-                  <div class="view-label" style="margin-bottom:3px;">Transify Key</div>
-                  <div class="art-view" data-k="clawback-key" style="font-size:13px;color:#111827;font-weight:500;">clawback_ar_send</div>
-                  <input class="form-input art-input" data-k="clawback-key" value="clawback_ar_send" style="display:none;width:100%;font-size:13px;" />
+                  <div class="view-label" style="margin-bottom:3px;">AR Task ID</div>
+                  <div id="artask-view" style="font-size:13px;color:#9CA3AF;font-weight:500;">Not set</div>
+                  <input id="artask-input" class="form-input" placeholder="e.g. AR-2024-00123" style="display:none;width:100%;max-width:260px;font-size:13px;" />
                 </div>
               </div>
             </div>
@@ -3082,7 +3016,6 @@ tr.drag-over { border-top: 2px solid #2563EB; }
               <th style="min-width:170px;">File Generation</th>
               <th style="width:130px;">File Transfer Method</th>
               <th style="min-width:190px;">BD Ceph File Path</th>
-              
               <th class="col-portal" style="min-width:230px;">Investor Portal File Path</th>
               <th style="width:120px;text-align:center;">If Sync by Funding</th>
               <th style="width:120px;">Action</th>
@@ -4243,7 +4176,7 @@ function updateBulkBar() {
     else if (mixed) {
       opsHint.innerHTML = ` · <span style="color:#D97706;">⚠️ Mixed Ops Flow (${opsFlows.join(', ')}) — Batch Sub Plan requires the same Ops Flow</span>`;
     } else {
-      opsHint.innerHTML = ` · Ops Flow: <strong>${opsFlows[0]}</strong> · click "Create Sub Plan (Batch)" to create Sub Plans`;
+      opsHint.innerHTML = ` · Ops Flow: <strong>${opsFlows[0]}</strong>`;
     }
   }
 
@@ -4289,7 +4222,7 @@ function onBatchAdjustClick() {
       hint.innerHTML = '← Check the boxes in the table to select funders first';
       setTimeout(() => {
         hint.style.color = '#9CA3AF';
-        hint.innerHTML = '✓ <span id="lib-select-count">0</span> funder(s) selected — click "Create Sub Plan (Batch)" to continue';
+        hint.innerHTML = '✓ <span id="lib-select-count">0</span> funder(s) selected';
         hint.style.display = 'none';
       }, 2200);
     }
@@ -5105,29 +5038,24 @@ function confirmDeleteFile() {
   closeDelFile();
 }
 
-// AR Task — inline edit/save toggle (Cutoff + Clawback: Task ID / Name / Transify Key)
+// AR Task ID — inline edit/save toggle (View Funder > Basic Info)
 function toggleArTaskEdit() {
   const btn = document.getElementById('artask-edit-btn');
-  const views = [...document.querySelectorAll('#vi-artask-body .art-view')];
-  const inputs = [...document.querySelectorAll('#vi-artask-body .art-input')];
-  const editing = inputs.length && inputs[0].style.display !== 'none';
+  const view = document.getElementById('artask-view');
+  const input = document.getElementById('artask-input');
+  const editing = input.style.display !== 'none';
   if (editing) { // Save
-    inputs.forEach(inp => {
-      const v = views.find(x => x.dataset.k === inp.dataset.k);
-      if (v) { v.textContent = inp.value.trim() || '—'; v.style.color = inp.value.trim() ? '#111827' : '#9CA3AF'; }
-      inp.style.display = 'none';
-    });
-    views.forEach(v => v.style.display = '');
+    const v = input.value.trim();
+    view.textContent = v || 'Not set';
+    view.style.color = v ? '#111827' : '#9CA3AF';
+    input.style.display = 'none'; view.style.display = '';
     btn.textContent = 'Edit';
   } else { // Enter edit
-    views.forEach(v => {
-      const inp = inputs.find(x => x.dataset.k === v.dataset.k);
-      if (inp) inp.value = (v.textContent.trim() === '—' || v.textContent.trim() === 'Not set') ? '' : v.textContent.trim();
-      v.style.display = 'none';
-    });
-    inputs.forEach(inp => inp.style.display = '');
+    const cur = view.textContent.trim();
+    input.value = cur === 'Not set' ? '' : cur;
+    input.style.display = ''; view.style.display = 'none';
     btn.textContent = 'Save';
-    if (inputs[0]) inputs[0].focus();
+    input.focus();
   }
 }
 
@@ -5379,7 +5307,7 @@ function selectPricing(card) {
 const OPS_FLOW_MILESTONES = {
   // Flow A — ABS Gross
   'abs': [
-    { label: 'Weekly Collection Start Date', short: 'Weekly Collection Start', type: 'operation', rule:'relative', offsetFrom:'T', offset:0, bg: '#DBEAFE', color: '#1D4ED8' },
+    { label: 'Weekly Collection Start Date', short: 'Weekly Collection Start', type: 'operation', rule:'anchor', offsetFrom:'T', offset:0, bg: '#DBEAFE', color: '#1D4ED8' },
     { label: 'Weekly Collection End Date', short: 'Weekly Collection End', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:1, offset:1, bg: '#EDE9FE', color: '#6D28D9' },
     { label: 'Weekly Eligible Loan List Date', short: 'Weekly Eligible Loan List', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:2, offset:1, bg: '#FEF3C7', color: '#92400E' },
     { label: 'Weekly Cutoff Date', short: 'Weekly Cutoff', type: 'system', rule:'relative', offsetFrom:'milestone', offsetRef:3, offset:1, bg: '#CCFBF1', color: '#0F766E' },
@@ -5392,7 +5320,7 @@ const OPS_FLOW_MILESTONES = {
   ],
   // Flow B — ABS Net
   'abs-net': [
-    { label: 'Weekly Collection Start Date', short: 'Weekly Collection Start', type: 'operation', rule:'relative', offsetFrom:'T', offset:0, bg: '#DBEAFE', color: '#1D4ED8' },
+    { label: 'Weekly Collection Start Date', short: 'Weekly Collection Start', type: 'operation', rule:'anchor', offsetFrom:'T', offset:0, bg: '#DBEAFE', color: '#1D4ED8' },
     { label: 'Weekly Collection End Date', short: 'Weekly Collection End', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:1, offset:1, bg: '#EDE9FE', color: '#6D28D9' },
     { label: 'Weekly Eligible Loan List Date', short: 'Weekly Eligible Loan List', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:2, offset:1, bg: '#FEF3C7', color: '#92400E' },
     { label: 'Weekly Report Offer Date', short: 'Weekly Report Offer', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:3, offset:1, bg: '#CCFBF1', color: '#0F766E' },
@@ -5408,7 +5336,7 @@ const OPS_FLOW_MILESTONES = {
   ],
   // Flow C — ABL
   'abl': [
-    { label: 'Periodic Collection Start Date', short: 'Periodic Collection Start', type: 'operation', rule:'relative', offsetFrom:'T', offset:0, bg: '#DBEAFE', color: '#1D4ED8' },
+    { label: 'Periodic Collection Start Date', short: 'Periodic Collection Start', type: 'operation', rule:'anchor', offsetFrom:'T', offset:0, bg: '#DBEAFE', color: '#1D4ED8' },
     { label: 'Periodic Collection End Date', short: 'Periodic Collection End', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:1, offset:1, bg: '#EDE9FE', color: '#6D28D9' },
     { label: 'Periodic Eligible Loan List Date', short: 'Periodic Eligible Loan List', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:2, offset:1, bg: '#FEF3C7', color: '#92400E' },
     { label: 'Periodic Drawdown Date', short: 'Periodic Drawdown', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:3, offset:1, bg: '#CCFBF1', color: '#0F766E' },
@@ -5424,7 +5352,7 @@ const OPS_FLOW_MILESTONES = {
   ],
   // Flow D — MY ABS Gross
   'my': [
-    { label: 'Weekly Collection Start Date', short: 'Weekly Collection Start', type: 'operation', rule:'relative', offsetFrom:'T', offset:0, bg: '#DBEAFE', color: '#1D4ED8' },
+    { label: 'Weekly Collection Start Date', short: 'Weekly Collection Start', type: 'operation', rule:'anchor', offsetFrom:'T', offset:0, bg: '#DBEAFE', color: '#1D4ED8' },
     { label: 'Weekly Collection End Date', short: 'Weekly Collection End', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:1, offset:1, bg: '#EDE9FE', color: '#6D28D9' },
     { label: 'Weekly Eligible Loan List Date', short: 'Weekly Eligible Loan List', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:2, offset:1, bg: '#FEF3C7', color: '#92400E' },
     { label: 'Weekly Sale Notice Date', short: 'Weekly Sale Notice', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:3, offset:1, bg: '#CCFBF1', color: '#0F766E' },
@@ -5465,7 +5393,7 @@ function curUnit() {
 function ensureMsMeta(m, i) {
   if (!m.rule) {
     if (m.offsetFrom === 'formula') m.rule = (m.formula || '').trim().toLowerCase().indexOf('min(') === 0 ? 'min' : 'max';
-    else if (i === 0) m.rule = 'relative';
+    else if (i === 0) m.rule = 'anchor';
     else m.rule = 'relative';
   }
   if (m.offsetFrom === 'formula' && !m.refOffsets) {
@@ -5495,7 +5423,7 @@ function renderMilestoneTable(type) {
 
     // Rule selector — every row selectable; Fixed is the default for the first milestone
     const ruleCell = `<select class="ms-rule-sel" onchange="onRuleChange(${i},this)">${
-          ['relative', 'max', 'min'].map(r => `<option value="${r}"${m.rule === r ? ' selected' : ''}>${RULE_LABEL[r]}</option>`).join('')
+          ['anchor', 'relative', 'max', 'min'].map(r => `<option value="${r}"${m.rule === r ? ' selected' : ''}>${RULE_LABEL[r]}</option>`).join('')
         }</select>`;
 
     // Offset from — depends on rule
@@ -5630,7 +5558,7 @@ function renderRefEditor() {
         ${warn}
         <div style="font-size:12px;color:#6B7280;margin-top:16px;margin-bottom:4px;">Preview</div>
         <code style="display:block;font-size:13px;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:6px;padding:9px 11px;color:#111827;">M${refEditIdx + 1} = ${msFormula(m, unit)}</code>
-        <div style="font-size:12px;color:#6B7280;margin-top:12px;line-height:1.5;">ℹ References can only be other Milestones — T is excluded. To compare against T, use a Relative rule.</div>
+        <div style="font-size:12px;color:#6B7280;margin-top:12px;line-height:1.5;">ℹ References can only be other Milestones — T is excluded. To compare against T, use a Fixed or Relative rule.</div>
         <div style="display:flex;justify-content:flex-end;margin-top:18px;">
           <button onclick="closeRefEditor()" style="background:#004EEB;color:#fff;border:none;border-radius:6px;padding:9px 20px;font-size:14px;font-weight:600;cursor:pointer;">Done</button>
         </div>
@@ -6336,7 +6264,7 @@ function applyOpsRegion() {
 
 /* ── Init after DOM ready ── */
 (function init() {
-  applyOpsRegion();     // show only this region's ops flows (TH)
+  applyOpsRegion();
   selectOpsFlow('abs'); // populate milestone table + calendar on load
   initCycleSegments();  // render default 4-segment cycle
   ldInitMonth();
