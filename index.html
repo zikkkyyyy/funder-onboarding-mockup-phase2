@@ -965,6 +965,7 @@ tr.drag-over { border-top: 2px solid #2563EB; }
               <span>0 interest loan</span>
             </label>
           </div>
+          <div id="disc-scope-err" style="display:none;color:#DC2626;font-size:12px;margin-top:6px;">At least one scope must be selected.</div>
         </div>
 
         <!-- Discounting Price Mode -->
@@ -986,9 +987,10 @@ tr.drag-over { border-top: 2px solid #2563EB; }
         <div class="form-group" style="margin-bottom:20px;">
           <label class="form-label">Discounting Scenario <span class="req">*</span></label>
           <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px;">
-            <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#374151;cursor:pointer;"><input type="checkbox" checked style="accent-color:#2563EB;width:15px;height:15px;flex-shrink:0;" /><span>Cutoff</span></label>
-            <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#374151;cursor:pointer;"><input type="checkbox" checked style="accent-color:#2563EB;width:15px;height:15px;flex-shrink:0;" /><span>Clawback</span></label>
+            <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#374151;cursor:pointer;"><input type="checkbox" class="disc-scenario-chk" checked onchange="onDiscScenarioChange()" style="accent-color:#2563EB;width:15px;height:15px;flex-shrink:0;" /><span>Cutoff</span></label>
+            <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#374151;cursor:pointer;"><input type="checkbox" class="disc-scenario-chk" checked onchange="onDiscScenarioChange()" style="accent-color:#2563EB;width:15px;height:15px;flex-shrink:0;" /><span>Clawback</span></label>
           </div>
+          <div id="disc-scenario-err" style="display:none;color:#DC2626;font-size:12px;margin-top:6px;">At least one scenario must be selected.</div>
           <div class="field-note">Auto Clawback adopts the same discounting method as Clawback.</div>
         </div>
 
@@ -5491,17 +5493,18 @@ function toggleDiscounting(el) {
   const on = !el.classList.contains('off');
   const cfg = document.getElementById('disc-config');
   if (cfg) cfg.style.display = on ? '' : 'none';
-  // Turning discounting back on restores the (only) scope.
-  const scope = document.getElementById('disc-scope-zero');
-  if (on && scope) scope.checked = true;
 }
-// Only one scope exists; unchecking it means "no scope" → discounting has nothing to
-// apply to, so we auto-turn-off Support Discounting.
-function onDiscScopeChange(el) {
-  if (!el.checked) {
-    const tog = document.getElementById('disc-toggle');
-    if (tog && !tog.classList.contains('off')) toggleDiscounting(tog);
-  }
+// Scope & Scenario are required groups — at least one box must stay checked.
+// Unchecking all shows an inline error (rather than silently turning discounting off).
+function onDiscScopeChange() {
+  const box = document.getElementById('disc-scope-zero');
+  const err = document.getElementById('disc-scope-err');
+  if (err) err.style.display = (box && box.checked) ? 'none' : '';
+}
+function onDiscScenarioChange() {
+  const any = [...document.querySelectorAll('.disc-scenario-chk')].some(b => b.checked);
+  const err = document.getElementById('disc-scenario-err');
+  if (err) err.style.display = any ? 'none' : '';
 }
 /* Lender Detail: editing Support Discounting on a live/ready funder raises a ticket. */
 function discViewEdit() {
