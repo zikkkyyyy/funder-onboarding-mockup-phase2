@@ -2300,10 +2300,6 @@ tr.drag-over { border-top: 2px solid #2563EB; }
             </div>
           </div>
           <div style="display:flex;gap:10px;align-items:center;">
-            <button id="btn-batch-adjust" class="btn-outline-sm" style="padding:9px 16px;font-size:13px;color:#374151;display:flex;align-items:center;gap:6px;" onclick="bspOpen()">
-              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h6"/><circle cx="19" cy="18" r="3"/><path d="M19 15v3m0 0v3m0-3h3m-3 0h-3" stroke-width="1.8"/></svg>
-              Create Sub Plan (Batch)
-            </button>
             <button class="btn-outline-sm" style="padding:9px 16px;font-size:13px;color:#374151;display:flex;align-items:center;gap:6px;" onclick="openImportJsonModal()">
               <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
               Import
@@ -4392,7 +4388,7 @@ function updateBulkBar() {
     else if (mixed) {
       opsHint.innerHTML = ` · <span style="color:#D97706;">⚠️ Mixed Ops Flow (${opsFlows.join(', ')}) — Batch Sub Plan requires the same Ops Flow</span>`;
     } else {
-      opsHint.innerHTML = ` · Ops Flow: <strong>${opsFlows[0]}</strong> · click "Create Sub Plan (Batch)" to create Sub Plans`;
+      opsHint.innerHTML = ` · Ops Flow: <strong>${opsFlows[0]}</strong>`;
     }
   }
 
@@ -4438,7 +4434,7 @@ function onBatchAdjustClick() {
       hint.innerHTML = '← Check the boxes in the table to select funders first';
       setTimeout(() => {
         hint.style.color = '#9CA3AF';
-        hint.innerHTML = '✓ <span id="lib-select-count">0</span> funder(s) selected — click "Create Sub Plan (Batch)" to continue';
+        hint.innerHTML = '✓ <span id="lib-select-count">0</span> funder(s) selected';
         hint.style.display = 'none';
       }, 2200);
     }
