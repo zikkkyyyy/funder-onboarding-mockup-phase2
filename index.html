@@ -113,6 +113,7 @@ tr.plan-row-selected:hover td { background:#DBEAFE; }
 .tooltip-icon { font-size: 13px; color: #9CA3AF; cursor: default; margin-left: 4px; }
 .tooltip-box { display: none; position: fixed; background: #1F2937; color: #fff; font-size: 12px; font-weight: 400; text-transform: none; letter-spacing: 0; border-radius: 6px; padding: 7px 12px; white-space: nowrap; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 9999; pointer-events: none; transform: translateX(-50%); }
 .tooltip-box::after { content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 5px solid transparent; border-top-color: #1F2937; }
+.tooltip-box.formula { white-space: normal; width: 360px; text-align: left; padding: 12px 14px; }
 /* tooltip show/hide handled by JS for fixed positioning */
 </style>
 <script>
@@ -950,7 +951,7 @@ tr.drag-over { border-top: 2px solid #2563EB; }
     <div class="section-card">
       <div class="section-header" style="display:flex;align-items:center;justify-content:space-between;">
         <div>
-          <div class="section-title">Support Discounting</div>
+          <div class="section-title" style="display:inline-flex;align-items:center;gap:5px;">Support Discounting<span class="tooltip-wrap"><span class="tooltip-icon">ⓘ</span><span class="tooltip-box formula"><div style="font-weight:600;margin-bottom:8px;">Discounting price — general formula</div><div style="text-align:center;font-size:13px;line-height:1.5;margin:6px 0 10px;">Price = OSP ×<span style="display:inline-block;vertical-align:middle;text-align:center;margin-left:4px;"><span style="display:block;border-bottom:1px solid #9CA3AF;padding:0 8px 2px;">1</span><span style="display:block;padding-top:2px;">(1 + <b style="color:#93C5FD;">Discounting Rate</b>)<sup style="color:#FCD34D;">remaining term</sup></span></span></div><div style="font-size:10.5px;color:#9CA3AF;text-align:center;margin-bottom:8px;">e.g. Repurchase Price = OSP × 1 / (1 + Monthly EIR)^remaining term</div><div style="border-top:1px solid #374151;padding-top:9px;font-size:11px;line-height:2;"><div><b style="color:#93C5FD;">Discounting Rate</b> &nbsp;←&nbsp; the configured Discounting Rate (Manual / Monthly EIR / Daily EIR)</div><div><b style="color:#FCD34D;">remaining term</b> &nbsp;←&nbsp; Discounting Price Mode &amp; Days</div></div></span></span></div>
           <div class="section-sub">Funder-level setting. When on, the discounting rules below apply to this funder. <span style="color:#2563EB;">MY funders default to On.</span></div>
         </div>
         <div class="toggle" id="disc-toggle" onclick="toggleDiscounting(this)"></div>
@@ -1015,14 +1016,17 @@ tr.drag-over { border-top: 2px solid #2563EB; }
           <div class="radio-cards">
             <div class="radio-card selected" onclick="discPickCard(this)">
               <div class="radio-card-top"><div class="radio-dot on"></div><div class="radio-card-title">Manual config</div></div>
-              <div class="radio-card-desc">Rate entered manually per funder</div>
+              <div class="radio-card-desc">Rate entered manually (from Funder Fee Config)</div>
             </div>
-            <div class="radio-card" style="opacity:.55;cursor:not-allowed;">
-              <div class="radio-card-top"><div class="radio-dot"></div><div class="radio-card-title">Interest rate <span style="font-size:10px;font-weight:700;color:#92400E;background:#FEF3C7;padding:1px 6px;border-radius:4px;margin-left:4px;">TBC</span></div></div>
-              <div class="radio-card-desc">Derived from interest rate — not yet available</div>
+            <div class="radio-card" onclick="discPickCard(this)">
+              <div class="radio-card-top"><div class="radio-dot"></div><div class="radio-card-title">Monthly EIR by Tenor</div></div>
+              <div class="radio-card-desc">Monthly effective interest rate, per tenor</div>
+            </div>
+            <div class="radio-card" onclick="discPickCard(this)">
+              <div class="radio-card-top"><div class="radio-dot"></div><div class="radio-card-title">Daily EIR by Tenor</div></div>
+              <div class="radio-card-desc">Daily effective interest rate, per tenor</div>
             </div>
           </div>
-          <div class="field-note">Currently only Manual config is supported.</div>
         </div>
       </div>
     </div>
