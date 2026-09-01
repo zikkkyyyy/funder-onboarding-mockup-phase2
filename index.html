@@ -988,8 +988,8 @@ tr.drag-over { border-top: 2px solid #2563EB; }
           <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px;">
             <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#374151;cursor:pointer;"><input type="checkbox" checked style="accent-color:#2563EB;width:15px;height:15px;flex-shrink:0;" /><span>Cutoff</span></label>
             <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#374151;cursor:pointer;"><input type="checkbox" checked style="accent-color:#2563EB;width:15px;height:15px;flex-shrink:0;" /><span>Clawback</span></label>
-            <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#374151;cursor:pointer;"><input type="checkbox" checked style="accent-color:#2563EB;width:15px;height:15px;flex-shrink:0;" /><span>Auto Clawback</span></label>
           </div>
+          <div class="field-note">Auto Clawback adopts the same discounting method as Clawback.</div>
         </div>
 
         <!-- Discounting Days -->
@@ -2845,6 +2845,46 @@ tr.drag-over { border-top: 2px solid #2563EB; }
             <div style="padding:12px 20px;display:flex;justify-content:flex-end;gap:10px;">
               <button class="btn-outline-sm" style="padding:7px 18px;font-size:13px;" onclick="ptCancelEdit()">Cancel</button>
               <button class="btn-primary-lg" style="padding:7px 18px;font-size:13px;" onclick="ptOpenSaveModal()">Save</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Support Discounting (Phase 2) -->
+        <div class="view-section" id="disc-view-section">
+          <div class="view-section-hd">
+            <span class="view-section-title">Support Discounting</span>
+            <button class="btn-outline-sm" style="padding:6px 14px;font-size:12px;" onclick="discViewEdit()">Edit</button>
+          </div>
+          <div class="view-section-body">
+            <div style="display:grid;grid-template-columns:repeat(3,auto);gap:20px 48px;align-items:start;">
+              <div>
+                <div class="view-label" style="margin-bottom:4px;">Support Discounting</div>
+                <span class="badge" style="background:#DCFCE7;color:#16A34A;font-weight:600;padding:2px 10px;border-radius:10px;font-size:12px;">On</span>
+              </div>
+              <div>
+                <div class="view-label" style="margin-bottom:4px;">Discounting Scope</div>
+                <div style="font-size:13px;font-weight:600;color:#111827;">0 interest loan</div>
+              </div>
+              <div>
+                <div class="view-label" style="margin-bottom:4px;">Discounting Price Mode</div>
+                <div style="font-size:13px;font-weight:600;color:#111827;">By instalment discount</div>
+              </div>
+              <div>
+                <div class="view-label" style="margin-bottom:6px;">Discounting Scenario</div>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                  <span style="background:#DBEAFE;color:#1D4ED8;font-size:12px;font-weight:600;padding:2px 9px;border-radius:4px;">Cutoff</span>
+                  <span style="background:#DBEAFE;color:#1D4ED8;font-size:12px;font-weight:600;padding:2px 9px;border-radius:4px;">Clawback</span>
+                </div>
+                <div style="font-size:11px;color:#9CA3AF;margin-top:5px;">Auto Clawback adopts the same method as Clawback.</div>
+              </div>
+              <div>
+                <div class="view-label" style="margin-bottom:4px;">Discounting Days</div>
+                <div style="font-size:13px;font-weight:600;color:#111827;">Due to due</div>
+              </div>
+              <div>
+                <div class="view-label" style="margin-bottom:4px;">Discounting Rate</div>
+                <div style="font-size:13px;font-weight:600;color:#111827;">Manual config</div>
+              </div>
             </div>
           </div>
         </div>
@@ -5462,6 +5502,11 @@ function onDiscScopeChange(el) {
     const tog = document.getElementById('disc-toggle');
     if (tog && !tog.classList.contains('off')) toggleDiscounting(tog);
   }
+}
+/* Lender Detail: editing Support Discounting on a live/ready funder raises a ticket. */
+function discViewEdit() {
+  const t = document.getElementById('update-toast');
+  if (t) { t.textContent = '✓ Support Discounting change submitted to Ticket Center — pending maker/checker approval'; t.classList.add('visible'); setTimeout(() => t.classList.remove('visible'), 3200); }
 }
 function discPickCard(el) {
   if (el.style.cursor === 'not-allowed') return; // disabled option (e.g. Interest rate TBC)
