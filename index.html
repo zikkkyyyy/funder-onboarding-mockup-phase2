@@ -2859,9 +2859,10 @@ tr.drag-over { border-top: 2px solid #2563EB; }
         <div class="view-section" id="disc-view-section">
           <div class="view-section-hd">
             <span class="view-section-title">Support Discounting</span>
-            <button class="btn-outline-sm" style="padding:6px 14px;font-size:12px;" onclick="discViewEdit()">Edit</button>
+            <button class="btn-outline-sm" id="disc-edit-btn" style="padding:6px 14px;font-size:12px;" onclick="discStartEdit()">Edit</button>
           </div>
-          <div class="view-section-body">
+          <!-- VIEW mode -->
+          <div class="view-section-body" id="disc-view-body">
             <div style="display:grid;grid-template-columns:repeat(3,auto);gap:20px 48px;align-items:start;">
               <div>
                 <div class="view-label" style="margin-bottom:4px;">Support Discounting</div>
@@ -2873,7 +2874,7 @@ tr.drag-over { border-top: 2px solid #2563EB; }
               </div>
               <div>
                 <div class="view-label" style="margin-bottom:4px;">Discounting Price Mode</div>
-                <div style="font-size:13px;font-weight:600;color:#111827;">By instalment discount</div>
+                <div style="font-size:13px;font-weight:600;color:#111827;">By daily accrued</div>
               </div>
               <div>
                 <div class="view-label" style="margin-bottom:6px;">Discounting Scenario</div>
@@ -2884,9 +2885,36 @@ tr.drag-over { border-top: 2px solid #2563EB; }
                 <div style="font-size:11px;color:#9CA3AF;margin-top:5px;">Auto Clawback adopts the same method as Clawback.</div>
               </div>
               <div>
-                <div class="view-label" style="margin-bottom:4px;">Discounting Rate</div>
-                <div style="font-size:13px;font-weight:600;color:#111827;">Manual config</div>
+                <div class="view-label" style="margin-bottom:4px;">Discounting Days <span style="font-size:10px;font-weight:600;color:#16A34A;background:#DCFCE7;padding:1px 7px;border-radius:4px;margin-left:4px;">Live editable</span></div>
+                <div style="font-size:13px;font-weight:600;color:#111827;" id="disc-view-days">Due to due</div>
               </div>
+              <div>
+                <div class="view-label" style="margin-bottom:4px;">Discounting Rate <span style="font-size:10px;font-weight:600;color:#16A34A;background:#DCFCE7;padding:1px 7px;border-radius:4px;margin-left:4px;">Live editable</span></div>
+                <div style="font-size:13px;font-weight:600;color:#111827;" id="disc-view-rate">Manual config</div>
+              </div>
+            </div>
+          </div>
+          <!-- EDIT mode: only Days & Rate are live-editable -->
+          <div id="disc-edit-body" style="display:none;">
+            <div style="font-size:12px;color:#6B7280;margin-bottom:16px;">Only <b>Discounting Days</b> and <b>Discounting Rate</b> are editable after go-live (no ticket needed). Other settings are locked.</div>
+            <div style="margin-bottom:18px;">
+              <div class="view-label" style="margin-bottom:8px;">Discounting Days <span style="font-size:10px;font-weight:600;color:#16A34A;background:#DCFCE7;padding:1px 7px;border-radius:4px;margin-left:4px;">Live editable</span></div>
+              <div style="display:flex;gap:22px;">
+                <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;"><input type="radio" name="disc-e-days" value="Due to due" checked style="accent-color:#2563EB;width:15px;height:15px;">Due to due</label>
+                <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;"><input type="radio" name="disc-e-days" value="Calendar days" style="accent-color:#2563EB;width:15px;height:15px;">Calendar days</label>
+              </div>
+            </div>
+            <div style="margin-bottom:6px;">
+              <div class="view-label" style="margin-bottom:8px;">Discounting Rate <span style="font-size:10px;font-weight:600;color:#16A34A;background:#DCFCE7;padding:1px 7px;border-radius:4px;margin-left:4px;">Live editable</span></div>
+              <div style="display:flex;flex-direction:column;gap:9px;">
+                <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;"><input type="radio" name="disc-e-rate" value="Manual config" checked style="accent-color:#2563EB;width:15px;height:15px;">Manual config</label>
+                <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;"><input type="radio" name="disc-e-rate" value="Monthly EIR by Tenor" style="accent-color:#2563EB;width:15px;height:15px;">Monthly EIR by Tenor</label>
+                <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;"><input type="radio" name="disc-e-rate" value="Daily EIR by Tenor" style="accent-color:#2563EB;width:15px;height:15px;">Daily EIR by Tenor</label>
+              </div>
+            </div>
+            <div style="display:flex;justify-content:flex-end;gap:10px;border-top:1px solid #F3F4F6;padding-top:12px;margin-top:16px;">
+              <button class="btn-outline-sm" style="padding:7px 18px;font-size:13px;" onclick="discCancelEdit()">Cancel</button>
+              <button class="btn-primary-lg" style="padding:7px 18px;font-size:13px;" onclick="discSaveEdit()">Save</button>
             </div>
           </div>
         </div>
@@ -5514,9 +5542,29 @@ function discSelectPriceMode(el, mode) {
   if (days) days.style.display = (mode === 'daily') ? '' : 'none';
 }
 /* Lender Detail: editing Support Discounting on a live/ready funder raises a ticket. */
-function discViewEdit() {
+/* Lender Detail: after go-live only Days & Rate are live-editable (direct, no ticket). */
+function discStartEdit() {
+  const days = document.getElementById('disc-view-days').textContent.trim();
+  const rate = document.getElementById('disc-view-rate').textContent.trim();
+  document.querySelectorAll('input[name="disc-e-days"]').forEach(r => r.checked = (r.value === days));
+  document.querySelectorAll('input[name="disc-e-rate"]').forEach(r => r.checked = (r.value === rate));
+  document.getElementById('disc-view-body').style.display = 'none';
+  document.getElementById('disc-edit-body').style.display = '';
+  document.getElementById('disc-edit-btn').style.display = 'none';
+}
+function discCancelEdit() {
+  document.getElementById('disc-edit-body').style.display = 'none';
+  document.getElementById('disc-view-body').style.display = '';
+  document.getElementById('disc-edit-btn').style.display = '';
+}
+function discSaveEdit() {
+  const days = ([...document.querySelectorAll('input[name="disc-e-days"]')].find(r => r.checked) || {}).value || 'Due to due';
+  const rate = ([...document.querySelectorAll('input[name="disc-e-rate"]')].find(r => r.checked) || {}).value || 'Manual config';
+  document.getElementById('disc-view-days').textContent = days;
+  document.getElementById('disc-view-rate').textContent = rate;
+  discCancelEdit();
   const t = document.getElementById('update-toast');
-  if (t) { t.textContent = '✓ Support Discounting change submitted to Ticket Center — pending maker/checker approval'; t.classList.add('visible'); setTimeout(() => t.classList.remove('visible'), 3200); }
+  if (t) { t.textContent = '✓ Discounting updated — Days & Rate saved (live-editable, no ticket)'; t.classList.add('visible'); setTimeout(() => t.classList.remove('visible'), 3000); }
 }
 function discPickCard(el) {
   if (el.style.cursor === 'not-allowed') return; // disabled option (e.g. Interest rate TBC)
