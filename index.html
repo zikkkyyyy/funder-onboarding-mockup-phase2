@@ -961,11 +961,10 @@ tr.drag-over { border-top: 2px solid #2563EB; }
           <label class="form-label">Discounting Scope <span class="req">*</span></label>
           <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px;">
             <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#374151;cursor:pointer;">
-              <input type="checkbox" checked style="accent-color:#2563EB;width:15px;height:15px;flex-shrink:0;" />
+              <input type="checkbox" id="disc-scope-zero" checked onchange="onDiscScopeChange(this)" style="accent-color:#2563EB;width:15px;height:15px;flex-shrink:0;" />
               <span>0 interest loan</span>
             </label>
           </div>
-          <div class="field-note">More scopes will be added as new requirements arise.</div>
         </div>
 
         <!-- Discounting Price Mode -->
@@ -991,7 +990,6 @@ tr.drag-over { border-top: 2px solid #2563EB; }
             <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#374151;cursor:pointer;"><input type="checkbox" checked style="accent-color:#2563EB;width:15px;height:15px;flex-shrink:0;" /><span>Clawback</span></label>
             <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#374151;cursor:pointer;"><input type="checkbox" checked style="accent-color:#2563EB;width:15px;height:15px;flex-shrink:0;" /><span>Auto Clawback</span></label>
           </div>
-          <div class="field-note">New scenarios require new requirements.</div>
         </div>
 
         <!-- Discounting Days -->
@@ -5453,6 +5451,17 @@ function toggleDiscounting(el) {
   const on = !el.classList.contains('off');
   const cfg = document.getElementById('disc-config');
   if (cfg) cfg.style.display = on ? '' : 'none';
+  // Turning discounting back on restores the (only) scope.
+  const scope = document.getElementById('disc-scope-zero');
+  if (on && scope) scope.checked = true;
+}
+// Only one scope exists; unchecking it means "no scope" → discounting has nothing to
+// apply to, so we auto-turn-off Support Discounting.
+function onDiscScopeChange(el) {
+  if (!el.checked) {
+    const tog = document.getElementById('disc-toggle');
+    if (tog && !tog.classList.contains('off')) toggleDiscounting(tog);
+  }
 }
 function discPickCard(el) {
   if (el.style.cursor === 'not-allowed') return; // disabled option (e.g. Interest rate TBC)
