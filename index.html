@@ -1608,7 +1608,7 @@ tr.drag-over { border-top: 2px solid #2563EB; }
             <div class="ops-flow-stats">
               <div class="ops-stat"><span class="ops-stat-label">Region</span><span class="ops-stat-val">Thailand</span></div>
               <div class="ops-stat"><span class="ops-stat-label">Mode</span><span class="ops-stat-val">Gross</span></div>
-              <div class="ops-stat" style="grid-column:1/-1;"><span class="ops-stat-label">Milestones</span><span class="ops-stat-val">10</span></div>
+              <div class="ops-stat" style="grid-column:1/-1;"><span class="ops-stat-label">Milestones</span><span class="ops-stat-val">8</span></div>
             </div>
           </div>
           <div class="ops-flow-card" id="flow-card-abs-net" data-region="TH" onclick="selectOpsFlow('abs-net')">
@@ -1619,7 +1619,7 @@ tr.drag-over { border-top: 2px solid #2563EB; }
             <div class="ops-flow-stats">
               <div class="ops-stat"><span class="ops-stat-label">Region</span><span class="ops-stat-val">Thailand</span></div>
               <div class="ops-stat"><span class="ops-stat-label">Mode</span><span class="ops-stat-val">Net</span></div>
-              <div class="ops-stat" style="grid-column:1/-1;"><span class="ops-stat-label">Milestones</span><span class="ops-stat-val">13</span></div>
+              <div class="ops-stat" style="grid-column:1/-1;"><span class="ops-stat-label">Milestones</span><span class="ops-stat-val">9</span></div>
             </div>
           </div>
           <div class="ops-flow-card" id="flow-card-abl" data-region="TH" onclick="selectOpsFlow('abl')">
@@ -1630,7 +1630,7 @@ tr.drag-over { border-top: 2px solid #2563EB; }
             <div class="ops-flow-stats">
               <div class="ops-stat"><span class="ops-stat-label">Region</span><span class="ops-stat-val">Thailand</span></div>
               <div class="ops-stat"><span class="ops-stat-label">Mode</span><span class="ops-stat-val">Non-Net</span></div>
-              <div class="ops-stat" style="grid-column:1/-1;"><span class="ops-stat-label">Milestones</span><span class="ops-stat-val">13</span></div>
+              <div class="ops-stat" style="grid-column:1/-1;"><span class="ops-stat-label">Milestones</span><span class="ops-stat-val">8</span></div>
             </div>
           </div>
           <div class="ops-flow-card" id="flow-card-my" data-region="MY" onclick="selectOpsFlow('my')">
@@ -5542,48 +5542,37 @@ function selectPricing(card) {
 const OPS_FLOW_MILESTONES = {
   // Flow A — ABS Gross
   'abs': [
-    { label: 'Weekly Collection Start Date', short: 'Weekly Collection Start', type: 'operation', rule:'relative', offsetFrom:'T', offset:0, bg: '#DBEAFE', color: '#1D4ED8' },
-    { label: 'Weekly Collection End Date', short: 'Weekly Collection End', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:1, offset:1, bg: '#EDE9FE', color: '#6D28D9' },
-    { label: 'Weekly Eligible Loan List Date', short: 'Weekly Eligible Loan List', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:2, offset:1, bg: '#FEF3C7', color: '#92400E' },
-    { label: 'Weekly Cutoff Date', short: 'Weekly Cutoff', type: 'system', rule:'relative', offsetFrom:'milestone', offsetRef:3, offset:1, bg: '#CCFBF1', color: '#0F766E' },
-    { label: 'Weekly Sale Notice Date', short: 'Weekly Sale Notice', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:4, offset:1, bg: '#D1FAE5', color: '#065F46' },
-    { label: 'Weekly Sale Date', short: 'Weekly Sale', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:5, offset:1, bg: '#FCE7F3', color: '#9D174D' },
-    { label: 'Weekly Deposit Reminder Date', short: 'Weekly Deposit Reminder', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:6, offset:1, bg: '#E0E7FF', color: '#4338CA' },
-    { label: 'Weekly Deposit Date', short: 'Weekly Deposit', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:7, offset:1, bg: '#FFEDD5', color: '#C2410C' },
-    { label: 'Weekly Report Date', short: 'Weekly Report', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:8, offset:1, bg: '#F1F5F9', color: '#475569' },
-    { label: 'Last Collection End Date', short: 'Last Collection End', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:9, offset:1, bg: '#E0F2FE', color: '#0369A1' }
+    { label: 'Weekly Collection Start Date', short: 'Weekly Collection Start', type: 'operation', rule:'relative', offsetFrom:'T', offset:1, bg: '#DBEAFE', color: '#1D4ED8' },
+    { label: 'Weekly Collection End Date', short: 'Weekly Collection End', type: 'operation', rule:'relative', offsetFrom:'END', offset:0, bg: '#EDE9FE', color: '#6D28D9' },
+    { label: 'Weekly Servicer Report Date', short: 'Weekly Servicer Report', type: 'operation', rule:'relative', offsetFrom:'T', offset:1, bg: '#FEF3C7', color: '#92400E' },
+    { label: 'Weekly Batch Creation Date', short: 'Weekly Batch Creation', type: 'operation', rule:'relative', offsetFrom:'T', offset:1, bg: '#CCFBF1', color: '#0F766E' },
+    { label: 'Weekly Cutoff Date', short: 'Weekly Cutoff', type: 'system', rule:'relative', offsetFrom:'milestone', offsetRef:4, offset:1, bg: '#D1FAE5', color: '#065F46' },
+    { label: 'Weekly Sale Notice Date', short: 'Weekly Sale Notice', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:4, offset:1, bg: '#FCE7F3', color: '#9D174D' },
+    { label: 'Weekly Sale Date', short: 'Weekly Sale', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:5, offset:3, bg: '#E0E7FF', color: '#4338CA' },
+    { label: 'Weekly Collection Deposit Date', short: 'Weekly Collection Deposit', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:5, offset:2, bg: '#FFEDD5', color: '#C2410C' }
   ],
   // Flow B — ABS Net
   'abs-net': [
-    { label: 'Weekly Collection Start Date', short: 'Weekly Collection Start', type: 'operation', rule:'relative', offsetFrom:'T', offset:0, bg: '#DBEAFE', color: '#1D4ED8' },
-    { label: 'Weekly Collection End Date', short: 'Weekly Collection End', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:1, offset:1, bg: '#EDE9FE', color: '#6D28D9' },
-    { label: 'Weekly Eligible Loan List Date', short: 'Weekly Eligible Loan List', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:2, offset:1, bg: '#FEF3C7', color: '#92400E' },
-    { label: 'Weekly Report Offer Date', short: 'Weekly Report Offer', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:3, offset:1, bg: '#CCFBF1', color: '#0F766E' },
-    { label: 'Weekly Sale Notice Date', short: 'Weekly Sale Notice', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:4, offset:1, bg: '#D1FAE5', color: '#065F46' },
-    { label: 'Weekly Sale Date', short: 'Weekly Sale', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:5, offset:1, bg: '#FCE7F3', color: '#9D174D' },
-    { label: 'Weekly Deposit Date', short: 'Weekly Deposit', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:6, offset:1, bg: '#E0E7FF', color: '#4338CA' },
-    { label: 'Weekly Collection Report Generation Date', short: 'Weekly Collection Report Generation', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:7, offset:1, bg: '#FFEDD5', color: '#C2410C' },
-    { label: 'Weekly Report Date', short: 'Weekly Report', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:8, offset:1, bg: '#F1F5F9', color: '#475569' },
-    { label: 'Monthly Cutoff Date', short: 'Monthly Cutoff', type: 'system', rule:'relative', offsetFrom:'milestone', offsetRef:9, offset:1, bg: '#E0F2FE', color: '#0369A1' },
-    { label: 'Monthly Report Date', short: 'Monthly Report', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:10, offset:1, bg: '#FEE2E2', color: '#B91C1C' },
-    { label: 'Monthly Payment Date', short: 'Monthly Payment', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:11, offset:1, bg: '#ECFCCB', color: '#4D7C0F' },
-    { label: 'Monthly Note Payment Date', short: 'Monthly Note Payment', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:12, offset:1, bg: '#F5F3FF', color: '#7C3AED' }
+    { label: 'Weekly Collection Start Date', short: 'Weekly Collection Start', type: 'operation', rule:'relative', offsetFrom:'T', offset:1, bg: '#DBEAFE', color: '#1D4ED8' },
+    { label: 'Weekly Collection End Date', short: 'Weekly Collection End', type: 'operation', rule:'relative', offsetFrom:'END', offset:0, bg: '#EDE9FE', color: '#6D28D9' },
+    { label: 'Weekly Collection Report Generation Date', short: 'Weekly Collection Report Generation', type: 'operation', rule:'relative', offsetFrom:'T', offset:1, bg: '#FEF3C7', color: '#92400E' },
+    { label: 'Weekly Batch Creation Date', short: 'Weekly Batch Creation', type: 'operation', rule:'relative', offsetFrom:'T', offset:1, bg: '#CCFBF1', color: '#0F766E' },
+    { label: 'Weekly Collection Report Date', short: 'Weekly Collection Report', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:4, offset:2, bg: '#D1FAE5', color: '#065F46' },
+    { label: 'Weekly Cutoff Date', short: 'Weekly Cutoff', type: 'system', rule:'relative', offsetFrom:'milestone', offsetRef:4, offset:2, bg: '#FCE7F3', color: '#9D174D' },
+    { label: 'Weekly Sale Notice Date', short: 'Weekly Sale Notice', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:4, offset:2, bg: '#E0E7FF', color: '#4338CA' },
+    { label: 'Weekly Sale Date', short: 'Weekly Sale', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:6, offset:3, bg: '#FFEDD5', color: '#C2410C' },
+    { label: 'Weekly Collection Deposit Date', short: 'Weekly Collection Deposit', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:6, offset:3, bg: '#F1F5F9', color: '#475569' }
   ],
   // Flow C — ABL
   'abl': [
     { label: 'Periodic Collection Start Date', short: 'Periodic Collection Start', type: 'operation', rule:'relative', offsetFrom:'T', offset:0, bg: '#DBEAFE', color: '#1D4ED8' },
-    { label: 'Periodic Collection End Date', short: 'Periodic Collection End', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:1, offset:1, bg: '#EDE9FE', color: '#6D28D9' },
-    { label: 'Periodic Eligible Loan List Date', short: 'Periodic Eligible Loan List', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:2, offset:1, bg: '#FEF3C7', color: '#92400E' },
-    { label: 'Periodic Drawdown Date', short: 'Periodic Drawdown', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:3, offset:1, bg: '#CCFBF1', color: '#0F766E' },
-    { label: 'Periodic Sale Date', short: 'Periodic Sale', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:4, offset:1, bg: '#D1FAE5', color: '#065F46' },
-    { label: 'Periodic Interest Invoice Date', short: 'Periodic Interest Invoice', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:5, offset:1, bg: '#FCE7F3', color: '#9D174D' },
-    { label: 'Periodic Internal Report Reconciliation End Date', short: 'Periodic Internal Report Reconciliation End', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:6, offset:1, bg: '#E0E7FF', color: '#4338CA' },
-    { label: 'Periodic Report Date', short: 'Periodic Report', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:7, offset:1, bg: '#FFEDD5', color: '#C2410C' },
-    { label: 'Periodic Confirmation Date', short: 'Periodic Confirmation', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:8, offset:1, bg: '#F1F5F9', color: '#475569' },
-    { label: 'Periodic Cash Sweep Date', short: 'Periodic Cash Sweep', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:9, offset:1, bg: '#E0F2FE', color: '#0369A1' },
-    { label: 'Periodic Settlement Date', short: 'Periodic Settlement', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:10, offset:1, bg: '#FEE2E2', color: '#B91C1C' },
-    { label: 'Previous Settlement Date', short: 'Previous Settlement', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:11, offset:1, bg: '#ECFCCB', color: '#4D7C0F' },
-    { label: 'Last Collection End Date', short: 'Last Collection End', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:12, offset:1, bg: '#F5F3FF', color: '#7C3AED' }
+    { label: 'Periodic Collection End Date', short: 'Periodic Collection End', type: 'operation', rule:'relative', offsetFrom:'END', offset:0, bg: '#EDE9FE', color: '#6D28D9' },
+    { label: 'Periodic Interest Invoice Date', short: 'Periodic Interest Invoice', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:2, offset:1, bg: '#FEF3C7', color: '#92400E' },
+    { label: 'Periodic Internal Report Reconciliation End Date', short: 'Periodic Internal Report Reconciliation End', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:2, offset:2, bg: '#CCFBF1', color: '#0F766E' },
+    { label: 'Periodic Report Date', short: 'Periodic Report', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:2, offset:3, bg: '#D1FAE5', color: '#065F46' },
+    { label: 'Periodic Confirmation Date', short: 'Periodic Confirmation', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:5, offset:1, bg: '#FCE7F3', color: '#9D174D' },
+    { label: 'Periodic Cash Sweep Date', short: 'Periodic Cash Sweep', type: 'operation', rule:'relative', offsetFrom:'milestone', offsetRef:5, offset:2, bg: '#E0E7FF', color: '#4338CA' },
+    { label: 'Periodic Settlement Date', short: 'Periodic Settlement', type: 'system', rule:'relative', offsetFrom:'milestone', offsetRef:5, offset:3, bg: '#FFEDD5', color: '#C2410C' }
   ],
   // Flow D — MY ABS Gross
   'my': [
