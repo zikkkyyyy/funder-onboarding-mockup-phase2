@@ -2789,64 +2789,17 @@ tr.drag-over { border-top: 2px solid #2563EB; }
         <div class="view-section" id="pt-section">
           <div class="view-section-hd">
             <span class="view-section-title">Pricing &amp; Terms</span>
-            <button class="btn-outline-sm" id="pt-edit-btn" style="padding:6px 14px;font-size:12px;" onclick="ptStartEdit()">Edit</button>
           </div>
-
-          <!-- VIEW mode body -->
-          <div class="view-section-body" id="pt-view-body">
-            <div style="display:grid;grid-template-columns:repeat(3,auto);gap:24px 40px;align-items:start;">
+          <div class="view-section-body">
+            <div style="display:grid;grid-template-columns:repeat(3,auto);gap:24px 48px;align-items:start;">
               <div>
                 <div class="view-label" style="margin-bottom:4px;">Pricing Mode <span class="tooltip-wrap"><span class="tooltip-icon">ⓘ</span><span class="tooltip-box">This determines how to calculate the interest split at cutoff.</span></span></div>
-                <div style="font-size:13px;font-weight:600;color:#111827;" id="pt-view-pricing-model">Accrued Interest</div>
+                <div style="font-size:13px;font-weight:600;color:#111827;">Accrued Interest</div>
               </div>
               <div>
-                <div class="view-label" style="margin-bottom:6px;">Auto Clawback Enabled</div>
-                <div class="toggle" style="pointer-events:none;" id="pt-view-toggle"></div>
+                <div class="view-label" style="margin-bottom:6px;">Discounting Enabled</div>
+                <div class="toggle" style="pointer-events:none;"></div>
               </div>
-              <div>
-                <div class="view-label" style="margin-bottom:4px;">Auto Clawback Mode</div>
-                <div style="font-size:13px;color:#374151;" id="pt-view-mode">Mode 1 (Accrued to Restructure Date)</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- EDIT mode body -->
-          <div id="pt-edit-body" style="display:none;">
-            <div style="padding:16px 20px;display:grid;grid-template-columns:auto 1fr 1fr auto;gap:24px 40px;align-items:start;border-bottom:1px solid #F3F4F6;">
-              <!-- Col 1: Pricing Mode (read-only) -->
-              <div>
-                <div class="view-label" style="margin-bottom:4px;">Pricing Mode <span class="tooltip-wrap"><span class="tooltip-icon">ⓘ</span><span class="tooltip-box">This determines how to calculate the interest split at cutoff.</span></span></div>
-                <div style="font-size:13px;font-weight:700;color:#111827;text-transform:uppercase;letter-spacing:0.04em;" id="pt-edit-pricing-label">Accrued Interest</div>
-              </div>
-              <!-- Col 2: Auto Clawback toggle -->
-              <div>
-                <div class="view-label" style="margin-bottom:8px;">Auto Clawback Enabled</div>
-                <div class="toggle" id="pt-clawback-toggle" onclick="ptToggleClawback()"></div>
-              </div>
-              <!-- Col 3: Mode radios -->
-              <div>
-                <div class="view-label" style="margin-bottom:8px;">Auto Clawback Mode</div>
-                <div style="display:flex;flex-direction:column;gap:8px;">
-                  <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;" onclick="ptSelectMode(1)">
-                    <div class="radio-dot on" id="pt-mode1-dot" style="flex-shrink:0;"></div>
-                    Mode 1 (Accrued to Restructure Date)
-                  </label>
-                  <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;" onclick="ptSelectMode(2)">
-                    <div class="radio-dot" id="pt-mode2-dot" style="flex-shrink:0;"></div>
-                    Mode 2 (Accrued to Pre-Completion)
-                  </label>
-                </div>
-              </div>
-              <!-- Col 4: N Input (Mode 2 only) -->
-              <div id="pt-n-input-row">
-                <div class="view-label" style="margin-bottom:6px;">N Input</div>
-                <input type="number" min="1" value="1" id="pt-n-input" class="form-input" style="width:90px;font-size:13px;" />
-              </div>
-            </div>
-            <!-- Footer with Cancel + Save -->
-            <div style="padding:12px 20px;display:flex;justify-content:flex-end;gap:10px;">
-              <button class="btn-outline-sm" style="padding:7px 18px;font-size:13px;" onclick="ptCancelEdit()">Cancel</button>
-              <button class="btn-primary-lg" style="padding:7px 18px;font-size:13px;" onclick="ptOpenSaveModal()">Save</button>
             </div>
           </div>
         </div>
@@ -2916,41 +2869,55 @@ tr.drag-over { border-top: 2px solid #2563EB; }
         </div>
 
         <!-- Manual Clawback -->
-        <div class="view-section" id="mc-section">
+        <div class="view-section" id="cs-section">
           <div class="view-section-hd">
-            <span class="view-section-title">Manual Clawback</span>
-            <button class="btn-outline-sm" id="mc-edit-btn" style="padding:6px 14px;font-size:12px;" onclick="mcStartEdit()">Edit</button>
+            <span class="view-section-title">Clawback Setting</span>
+            <button class="btn-outline-sm" id="cs-edit-btn" style="padding:6px 14px;font-size:12px;" onclick="csStartEdit()">Edit</button>
           </div>
           <!-- View mode -->
-          <div class="view-section-body" id="mc-view-body">
-            <div class="view-label" style="margin-bottom:8px;">Clawback Mode</div>
-            <div style="display:flex;gap:8px;flex-wrap:wrap;" id="mc-view-badges">
-              <span style="background:#DBEAFE;color:#1D4ED8;font-size:12px;font-weight:600;padding:3px 10px;border-radius:4px;">Mode A: Standard osp + accrued i</span>
-              <span style="background:#DBEAFE;color:#1D4ED8;font-size:12px;font-weight:600;padding:3px 10px;border-radius:4px;">Mode B: Standard osp only</span>
+          <div class="view-section-body" id="cs-view-body">
+            <div style="display:grid;grid-template-columns:repeat(3,auto);gap:20px 48px;align-items:start;">
+              <div>
+                <div class="view-label" style="margin-bottom:8px;">Manual Clawback Mode</div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;" id="cs-view-manual">
+                  <span style="background:#DBEAFE;color:#1D4ED8;font-size:12px;font-weight:600;padding:3px 10px;border-radius:4px;">Mode A: Standard osp + accrued i</span>
+                  <span style="background:#DBEAFE;color:#1D4ED8;font-size:12px;font-weight:600;padding:3px 10px;border-radius:4px;">Mode B: Standard osp only</span>
+                </div>
+              </div>
+              <div>
+                <div class="view-label" style="margin-bottom:6px;">Auto Clawback Enabled</div>
+                <div class="toggle" style="pointer-events:none;" id="cs-view-auto-toggle"></div>
+              </div>
+              <div>
+                <div class="view-label" style="margin-bottom:4px;">Auto Clawback Mode</div>
+                <div style="font-size:13px;color:#374151;" id="cs-view-auto-mode">Mode 1 (Accrued to Restructure Date)</div>
+              </div>
             </div>
           </div>
           <!-- Edit mode -->
-          <div id="mc-edit-body" style="display:none;">
-            <div style="padding:16px 20px;border-bottom:1px solid #F3F4F6;">
-              <div class="view-label" style="margin-bottom:10px;">Clawback Mode <span class="req">*</span></div>
-              <div style="display:flex;flex-direction:column;gap:12px;">
-                <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#374151;cursor:pointer;">
-                  <input type="checkbox" id="mc-edit-mode-a" checked style="accent-color:#2563EB;width:15px;height:15px;flex-shrink:0;" />
-                  <span><strong>Mode A:</strong> Standard osp + accrued i</span>
-                </label>
-                <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#374151;cursor:pointer;">
-                  <input type="checkbox" id="mc-edit-mode-b" checked style="accent-color:#2563EB;width:15px;height:15px;flex-shrink:0;" />
-                  <span><strong>Mode B:</strong> Standard osp only</span>
-                </label>
-                <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#374151;cursor:pointer;">
-                  <input type="checkbox" id="mc-edit-mode-c" style="accent-color:#2563EB;width:15px;height:15px;flex-shrink:0;" />
-                  <span><strong>Mode C:</strong> Custom effective date</span>
-                </label>
+          <div id="cs-edit-body" style="display:none;">
+            <div style="padding:4px 0 16px;display:grid;grid-template-columns:1fr 1fr;gap:24px 48px;align-items:start;">
+              <div>
+                <div class="view-label" style="margin-bottom:10px;">Manual Clawback Mode <span class="req">*</span></div>
+                <div style="display:flex;flex-direction:column;gap:12px;">
+                  <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#374151;cursor:pointer;"><input type="checkbox" id="cs-e-mode-a" checked style="accent-color:#2563EB;width:15px;height:15px;flex-shrink:0;" /><span><strong>Mode A:</strong> Standard osp + accrued i</span></label>
+                  <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#374151;cursor:pointer;"><input type="checkbox" id="cs-e-mode-b" checked style="accent-color:#2563EB;width:15px;height:15px;flex-shrink:0;" /><span><strong>Mode B:</strong> Standard osp only</span></label>
+                  <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#374151;cursor:pointer;"><input type="checkbox" id="cs-e-mode-c" style="accent-color:#2563EB;width:15px;height:15px;flex-shrink:0;" /><span><strong>Mode C:</strong> Custom effective date</span></label>
+                </div>
+              </div>
+              <div>
+                <div class="view-label" style="margin-bottom:8px;">Auto Clawback Enabled</div>
+                <div class="toggle" id="cs-e-auto-toggle" onclick="this.classList.toggle('off')"></div>
+                <div class="view-label" style="margin:16px 0 8px;">Auto Clawback Mode</div>
+                <div style="display:flex;flex-direction:column;gap:8px;">
+                  <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;" onclick="csSelectAutoMode(1)"><div class="radio-dot on" id="cs-e-mode1-dot" style="flex-shrink:0;"></div>Mode 1 (Accrued to Restructure Date)</label>
+                  <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;" onclick="csSelectAutoMode(2)"><div class="radio-dot" id="cs-e-mode2-dot" style="flex-shrink:0;"></div>Mode 2 (Accrued to Pre-Completion)</label>
+                </div>
               </div>
             </div>
-            <div style="padding:12px 20px;display:flex;justify-content:flex-end;gap:10px;">
-              <button class="btn-outline-sm" style="padding:7px 18px;font-size:13px;" onclick="mcCancelEdit()">Cancel</button>
-              <button class="btn-primary-lg" style="padding:7px 18px;font-size:13px;" onclick="mcSaveEdit()">Save</button>
+            <div style="display:flex;justify-content:flex-end;gap:10px;border-top:1px solid #F3F4F6;padding-top:12px;">
+              <button class="btn-outline-sm" style="padding:7px 18px;font-size:13px;" onclick="csCancelEdit()">Cancel</button>
+              <button class="btn-primary-lg" style="padding:7px 18px;font-size:13px;" onclick="csSaveEdit()">Save</button>
             </div>
           </div>
         </div>
@@ -5538,6 +5505,37 @@ function discSelectPriceMode(el, mode) {
   if (days) days.style.display = (mode === 'daily') ? '' : 'none';
 }
 /* Lender Detail: editing Support Discounting on a live/ready funder raises a ticket. */
+/* Clawback Setting (merged Manual + Auto Clawback) — Lender Detail. */
+function csStartEdit() {
+  document.getElementById('cs-view-body').style.display = 'none';
+  document.getElementById('cs-edit-body').style.display = '';
+  document.getElementById('cs-edit-btn').style.display = 'none';
+}
+function csCancelEdit() {
+  document.getElementById('cs-edit-body').style.display = 'none';
+  document.getElementById('cs-view-body').style.display = '';
+  document.getElementById('cs-edit-btn').style.display = '';
+}
+function csSelectAutoMode(n) {
+  document.getElementById('cs-e-mode1-dot').classList.toggle('on', n === 1);
+  document.getElementById('cs-e-mode2-dot').classList.toggle('on', n === 2);
+}
+function csSaveEdit() {
+  const modes = [];
+  if (document.getElementById('cs-e-mode-a').checked) modes.push('Mode A: Standard osp + accrued i');
+  if (document.getElementById('cs-e-mode-b').checked) modes.push('Mode B: Standard osp only');
+  if (document.getElementById('cs-e-mode-c').checked) modes.push('Mode C: Custom effective date');
+  document.getElementById('cs-view-manual').innerHTML = modes.length
+    ? modes.map(m => `<span style="background:#DBEAFE;color:#1D4ED8;font-size:12px;font-weight:600;padding:3px 10px;border-radius:4px;">${m}</span>`).join('')
+    : '<span style="font-size:12px;color:#9CA3AF;">None</span>';
+  const autoOn = !document.getElementById('cs-e-auto-toggle').classList.contains('off');
+  document.getElementById('cs-view-auto-toggle').classList.toggle('off', !autoOn);
+  const mode1 = document.getElementById('cs-e-mode1-dot').classList.contains('on');
+  document.getElementById('cs-view-auto-mode').textContent = mode1 ? 'Mode 1 (Accrued to Restructure Date)' : 'Mode 2 (Accrued to Pre-Completion)';
+  csCancelEdit();
+  const t = document.getElementById('update-toast');
+  if (t) { t.textContent = '✓ Clawback setting change submitted to Ticket Center — pending maker/checker approval'; t.classList.add('visible'); setTimeout(() => t.classList.remove('visible'), 3000); }
+}
 /* Lender Detail: after go-live only Days & Rate are live-editable (direct, no ticket). */
 function discStartEdit() {
   const days = document.getElementById('disc-view-days').textContent.trim();
