@@ -5459,9 +5459,11 @@ function discSelectPriceMode(el, mode) {
 }
 /* Lender Detail: editing Support Discounting on a live/ready funder raises a ticket. */
 /* Clawback Setting (merged Manual + Auto Clawback) — Lender Detail, MODAL edit. */
-function csSelectAutoMode(n) {
-  document.getElementById('cs-e-mode1-dot').classList.toggle('on', n === 1);
-  document.getElementById('cs-e-mode2-dot').classList.toggle('on', n === 2);
+// N Input only applies to Auto Clawback Mode 2.
+function csOnAutoMode() {
+  const sel = document.querySelector('#clawback-modal input[name="cs-e-auto-mode"]:checked');
+  const nRow = document.getElementById('cs-n-row');
+  if (nRow) nRow.style.display = (sel && sel.value === '2') ? 'flex' : 'none';
 }
 // Load the modal fields from the currently-saved view state.
 function clawbackPopulate() {
@@ -5472,7 +5474,9 @@ function clawbackPopulate() {
   const autoOff = document.getElementById('cs-view-auto-toggle').classList.contains('off');
   document.getElementById('cs-e-auto-toggle').classList.toggle('off', autoOff);
   const mode2 = document.getElementById('cs-view-auto-mode').textContent.includes('Mode 2');
-  csSelectAutoMode(mode2 ? 2 : 1);
+  const r = document.querySelector('#clawback-modal input[name="cs-e-auto-mode"][value="' + (mode2 ? '2' : '1') + '"]');
+  if (r) r.checked = true;
+  csOnAutoMode();
 }
 function openClawbackModal() {
   clawbackPopulate();
@@ -5486,14 +5490,14 @@ function submitClawbackModal() {
   const modes = [];
   if (document.getElementById('cs-e-mode-a').checked) modes.push('Mode A: Standard osp + accrued i');
   if (document.getElementById('cs-e-mode-b').checked) modes.push('Mode B: Standard osp only');
-  if (document.getElementById('cs-e-mode-c').checked) modes.push('Mode C: Custom effective date');
+  if (document.getElementById('cs-e-mode-c').checked) modes.push('Mode C: OSP + Custom Effective Interest');
   document.getElementById('cs-view-manual').innerHTML = modes.length
     ? modes.map(m => `<span style="background:#DBEAFE;color:#1D4ED8;font-size:12px;font-weight:600;padding:3px 10px;border-radius:4px;">${m}</span>`).join('')
     : '<span style="font-size:12px;color:#9CA3AF;">None</span>';
   const autoOn = !document.getElementById('cs-e-auto-toggle').classList.contains('off');
   document.getElementById('cs-view-auto-toggle').classList.toggle('off', !autoOn);
-  const mode1 = document.getElementById('cs-e-mode1-dot').classList.contains('on');
-  document.getElementById('cs-view-auto-mode').textContent = mode1 ? 'Mode 1 (Accrued to Restructure Date)' : 'Mode 2 (Accrued to Pre-Completion)';
+  const selMode = document.querySelector('#clawback-modal input[name="cs-e-auto-mode"]:checked');
+  document.getElementById('cs-view-auto-mode').textContent = (selMode && selMode.value === '2') ? 'Mode 2 (Accrued to Pre-Completion)' : 'Mode 1 (Accrued to Restructure Date)';
   closeClawbackModal();
   const t = document.getElementById('update-toast');
   if (t) { t.textContent = '✓ Clawback setting change submitted to Ticket Center — pending maker/checker approval'; t.classList.add('visible'); setTimeout(() => t.classList.remove('visible'), 3000); }
@@ -7188,38 +7192,45 @@ function spSubmit() {
   </div>
 </div>
 
-<!-- Edit Clawback Setting Modal (Lender Detail) — goes through maker/checker ticket -->
+<!-- Edit Clawback Setting Modal (Lender Detail) — layout follows real "Funder Onboard Setting" -->
 <div class="modal-overlay" id="clawback-modal">
-  <div class="modal" style="width:640px;">
+  <div class="modal" style="width:680px;">
     <div class="modal-header">
-      <div>
-        <div class="modal-title">Edit Clawback Setting</div>
-        <div class="modal-sub">Changes are submitted to Ticket Center for maker/checker approval.</div>
-      </div>
+      <div><div class="modal-title">Funder Onboard Setting</div></div>
       <button class="modal-close" onclick="closeClawbackModal()">✕</button>
     </div>
-    <div class="modal-body" style="padding:20px 24px;">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px 48px;align-items:start;">
-        <div>
-          <div class="view-label" style="margin-bottom:10px;">Manual Clawback Mode <span class="req">*</span></div>
-          <div style="display:flex;flex-direction:column;gap:12px;">
-            <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#374151;cursor:pointer;"><input type="checkbox" id="cs-e-mode-a" checked style="accent-color:#2563EB;width:15px;height:15px;flex-shrink:0;" /><span><strong>Mode A:</strong> Standard osp + accrued i</span></label>
-            <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#374151;cursor:pointer;"><input type="checkbox" id="cs-e-mode-b" checked style="accent-color:#2563EB;width:15px;height:15px;flex-shrink:0;" /><span><strong>Mode B:</strong> Standard osp only</span></label>
-            <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#374151;cursor:pointer;"><input type="checkbox" id="cs-e-mode-c" style="accent-color:#2563EB;width:15px;height:15px;flex-shrink:0;" /><span><strong>Mode C:</strong> Custom effective date</span></label>
-          </div>
-        </div>
-        <div>
-          <div class="view-label" style="margin-bottom:8px;">Auto Clawback Enabled</div>
-          <div class="toggle" id="cs-e-auto-toggle" onclick="this.classList.toggle('off')"></div>
-          <div class="view-label" style="margin:16px 0 8px;">Auto Clawback Mode</div>
-          <div style="display:flex;flex-direction:column;gap:8px;">
-            <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;" onclick="csSelectAutoMode(1)"><div class="radio-dot on" id="cs-e-mode1-dot" style="flex-shrink:0;"></div>Mode 1 (Accrued to Restructure Date)</label>
-            <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;" onclick="csSelectAutoMode(2)"><div class="radio-dot" id="cs-e-mode2-dot" style="flex-shrink:0;"></div>Mode 2 (Accrued to Pre-Completion)</label>
-          </div>
+    <div class="modal-body" style="padding:24px 28px;">
+      <!-- 1. Manual Clawback -->
+      <div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:12px;">1. Manual Clawback</div>
+      <div style="border-top:1px solid #EEF0F2;margin-bottom:20px;"></div>
+      <div style="display:flex;gap:18px;margin-bottom:28px;">
+        <div style="width:150px;text-align:right;font-size:13px;color:#374151;padding-top:1px;flex-shrink:0;">Clawback Mode：</div>
+        <div style="display:flex;flex-direction:column;gap:13px;">
+          <label style="display:flex;align-items:center;gap:9px;font-size:13px;color:#374151;cursor:pointer;"><input type="checkbox" id="cs-e-mode-a" checked style="accent-color:#2563EB;width:15px;height:15px;flex-shrink:0;">Mode A: Standard osp + accrued i</label>
+          <label style="display:flex;align-items:center;gap:9px;font-size:13px;color:#374151;cursor:pointer;"><input type="checkbox" id="cs-e-mode-b" checked style="accent-color:#2563EB;width:15px;height:15px;flex-shrink:0;">Mode B: Standard osp only</label>
+          <label style="display:flex;align-items:center;gap:9px;font-size:13px;color:#374151;cursor:pointer;"><input type="checkbox" id="cs-e-mode-c" style="accent-color:#2563EB;width:15px;height:15px;flex-shrink:0;">Mode C: OSP + Custom Effective Interest</label>
         </div>
       </div>
+      <!-- 2. Auto Clawback -->
+      <div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:12px;">2. Auto Clawback</div>
+      <div style="border-top:1px solid #EEF0F2;margin-bottom:20px;"></div>
+      <div style="display:flex;gap:18px;align-items:center;margin-bottom:22px;">
+        <div style="width:150px;text-align:right;font-size:13px;color:#374151;flex-shrink:0;">Auto Clawback：</div>
+        <div class="toggle" id="cs-e-auto-toggle" onclick="this.classList.toggle('off')"></div>
+      </div>
+      <div style="display:flex;gap:18px;margin-bottom:22px;">
+        <div style="width:150px;text-align:right;font-size:13px;color:#374151;padding-top:1px;flex-shrink:0;">Auto Clawback Mode：</div>
+        <div style="display:flex;flex-direction:column;gap:13px;">
+          <label style="display:flex;align-items:center;gap:9px;font-size:13px;color:#374151;cursor:pointer;"><input type="radio" name="cs-e-auto-mode" value="1" checked onchange="csOnAutoMode()" style="accent-color:#2563EB;width:15px;height:15px;flex-shrink:0;">Mode 1 (Accrued to Restructure Date)</label>
+          <label style="display:flex;align-items:center;gap:9px;font-size:13px;color:#374151;cursor:pointer;"><input type="radio" name="cs-e-auto-mode" value="2" onchange="csOnAutoMode()" style="accent-color:#2563EB;width:15px;height:15px;flex-shrink:0;">Mode 2 (Accrued to Pre-Completion)</label>
+        </div>
+      </div>
+      <div style="display:flex;gap:18px;align-items:center;" id="cs-n-row">
+        <div style="width:150px;text-align:right;font-size:13px;color:#374151;flex-shrink:0;"><span style="color:#DC2626;">*</span> N Input：</div>
+        <input type="number" min="1" value="1" id="cs-e-n-input" class="form-input" style="flex:1;font-size:13px;padding:9px 12px;border:1px solid #D1D5DB;border-radius:8px;color:#374151;">
+      </div>
     </div>
-    <div class="modal-footer" style="padding:12px 24px;display:flex;justify-content:flex-end;gap:10px;">
+    <div class="modal-footer" style="padding:14px 28px;display:flex;justify-content:flex-end;gap:10px;">
       <button class="btn-outline-sm" style="padding:8px 24px;font-size:13px;" onclick="resetClawbackModal()">Reset</button>
       <button class="btn-primary-lg" style="font-size:13px;padding:8px 24px;" onclick="submitClawbackModal()">Submit</button>
     </div>
