@@ -2808,7 +2808,7 @@ tr.drag-over { border-top: 2px solid #2563EB; }
         <div class="view-section" id="disc-view-section">
           <div class="view-section-hd">
             <span class="view-section-title">Discounting Setting</span>
-            <button class="btn-outline-sm" id="disc-edit-btn" style="padding:6px 14px;font-size:12px;" onclick="discStartEdit()">Edit</button>
+            <button class="btn-outline-sm" id="disc-edit-btn" style="padding:6px 14px;font-size:12px;" onclick="openDiscModal()">Edit</button>
           </div>
           <!-- VIEW mode -->
           <div class="view-section-body" id="disc-view-body">
@@ -2843,36 +2843,13 @@ tr.drag-over { border-top: 2px solid #2563EB; }
               </div>
             </div>
           </div>
-          <!-- EDIT mode: only Days & Rate are live-editable -->
-          <div id="disc-edit-body" style="display:none;">
-            <div style="font-size:12px;color:#6B7280;margin-bottom:16px;">Only <b>Discounting Days</b> and <b>Discounting Rate</b> are editable after go-live (no ticket needed). Other settings are locked.</div>
-            <div style="margin-bottom:18px;">
-              <div class="view-label" style="margin-bottom:8px;">Discounting Days <span style="font-size:10px;font-weight:600;color:#16A34A;background:#DCFCE7;padding:1px 7px;border-radius:4px;margin-left:4px;">Live editable</span></div>
-              <div style="display:flex;gap:22px;">
-                <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;"><input type="radio" name="disc-e-days" value="Due to due" checked style="accent-color:#2563EB;width:15px;height:15px;">Due to due</label>
-                <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;"><input type="radio" name="disc-e-days" value="Calendar days" style="accent-color:#2563EB;width:15px;height:15px;">Calendar days</label>
-              </div>
-            </div>
-            <div style="margin-bottom:6px;">
-              <div class="view-label" style="margin-bottom:8px;">Discounting Rate <span style="font-size:10px;font-weight:600;color:#16A34A;background:#DCFCE7;padding:1px 7px;border-radius:4px;margin-left:4px;">Live editable</span></div>
-              <div style="display:flex;flex-direction:column;gap:9px;">
-                <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;"><input type="radio" name="disc-e-rate" value="Manual config" checked style="accent-color:#2563EB;width:15px;height:15px;">Manual config</label>
-                <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;"><input type="radio" name="disc-e-rate" value="Monthly EIR by Tenor" style="accent-color:#2563EB;width:15px;height:15px;">Monthly EIR by Tenor</label>
-                <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;"><input type="radio" name="disc-e-rate" value="Daily EIR by Tenor" style="accent-color:#2563EB;width:15px;height:15px;">Daily EIR by Tenor</label>
-              </div>
-            </div>
-            <div style="display:flex;justify-content:flex-end;gap:10px;border-top:1px solid #F3F4F6;padding-top:12px;margin-top:16px;">
-              <button class="btn-outline-sm" style="padding:7px 18px;font-size:13px;" onclick="discCancelEdit()">Cancel</button>
-              <button class="btn-primary-lg" style="padding:7px 18px;font-size:13px;" onclick="discSaveEdit()">Save</button>
-            </div>
-          </div>
         </div>
 
-        <!-- Manual Clawback -->
+        <!-- Clawback Setting (Manual + Auto Clawback merged) -->
         <div class="view-section" id="cs-section">
           <div class="view-section-hd">
             <span class="view-section-title">Clawback Setting</span>
-            <button class="btn-outline-sm" id="cs-edit-btn" style="padding:6px 14px;font-size:12px;" onclick="csStartEdit()">Edit</button>
+            <button class="btn-outline-sm" id="cs-edit-btn" style="padding:6px 14px;font-size:12px;" onclick="openClawbackModal()">Edit</button>
           </div>
           <!-- View mode -->
           <div class="view-section-body" id="cs-view-body">
@@ -2892,32 +2869,6 @@ tr.drag-over { border-top: 2px solid #2563EB; }
                 <div class="view-label" style="margin-bottom:4px;">Auto Clawback Mode</div>
                 <div style="font-size:13px;color:#374151;" id="cs-view-auto-mode">Mode 1 (Accrued to Restructure Date)</div>
               </div>
-            </div>
-          </div>
-          <!-- Edit mode -->
-          <div id="cs-edit-body" style="display:none;">
-            <div style="padding:4px 0 16px;display:grid;grid-template-columns:1fr 1fr;gap:24px 48px;align-items:start;">
-              <div>
-                <div class="view-label" style="margin-bottom:10px;">Manual Clawback Mode <span class="req">*</span></div>
-                <div style="display:flex;flex-direction:column;gap:12px;">
-                  <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#374151;cursor:pointer;"><input type="checkbox" id="cs-e-mode-a" checked style="accent-color:#2563EB;width:15px;height:15px;flex-shrink:0;" /><span><strong>Mode A:</strong> Standard osp + accrued i</span></label>
-                  <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#374151;cursor:pointer;"><input type="checkbox" id="cs-e-mode-b" checked style="accent-color:#2563EB;width:15px;height:15px;flex-shrink:0;" /><span><strong>Mode B:</strong> Standard osp only</span></label>
-                  <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#374151;cursor:pointer;"><input type="checkbox" id="cs-e-mode-c" style="accent-color:#2563EB;width:15px;height:15px;flex-shrink:0;" /><span><strong>Mode C:</strong> Custom effective date</span></label>
-                </div>
-              </div>
-              <div>
-                <div class="view-label" style="margin-bottom:8px;">Auto Clawback Enabled</div>
-                <div class="toggle" id="cs-e-auto-toggle" onclick="this.classList.toggle('off')"></div>
-                <div class="view-label" style="margin:16px 0 8px;">Auto Clawback Mode</div>
-                <div style="display:flex;flex-direction:column;gap:8px;">
-                  <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;" onclick="csSelectAutoMode(1)"><div class="radio-dot on" id="cs-e-mode1-dot" style="flex-shrink:0;"></div>Mode 1 (Accrued to Restructure Date)</label>
-                  <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;" onclick="csSelectAutoMode(2)"><div class="radio-dot" id="cs-e-mode2-dot" style="flex-shrink:0;"></div>Mode 2 (Accrued to Pre-Completion)</label>
-                </div>
-              </div>
-            </div>
-            <div style="display:flex;justify-content:flex-end;gap:10px;border-top:1px solid #F3F4F6;padding-top:12px;">
-              <button class="btn-outline-sm" style="padding:7px 18px;font-size:13px;" onclick="csCancelEdit()">Cancel</button>
-              <button class="btn-primary-lg" style="padding:7px 18px;font-size:13px;" onclick="csSaveEdit()">Save</button>
             </div>
           </div>
         </div>
@@ -5505,22 +5456,31 @@ function discSelectPriceMode(el, mode) {
   if (days) days.style.display = (mode === 'daily') ? '' : 'none';
 }
 /* Lender Detail: editing Support Discounting on a live/ready funder raises a ticket. */
-/* Clawback Setting (merged Manual + Auto Clawback) — Lender Detail. */
-function csStartEdit() {
-  document.getElementById('cs-view-body').style.display = 'none';
-  document.getElementById('cs-edit-body').style.display = '';
-  document.getElementById('cs-edit-btn').style.display = 'none';
-}
-function csCancelEdit() {
-  document.getElementById('cs-edit-body').style.display = 'none';
-  document.getElementById('cs-view-body').style.display = '';
-  document.getElementById('cs-edit-btn').style.display = '';
-}
+/* Clawback Setting (merged Manual + Auto Clawback) — Lender Detail, MODAL edit. */
 function csSelectAutoMode(n) {
   document.getElementById('cs-e-mode1-dot').classList.toggle('on', n === 1);
   document.getElementById('cs-e-mode2-dot').classList.toggle('on', n === 2);
 }
-function csSaveEdit() {
+// Load the modal fields from the currently-saved view state.
+function clawbackPopulate() {
+  const manual = document.getElementById('cs-view-manual').textContent;
+  document.getElementById('cs-e-mode-a').checked = manual.includes('Mode A');
+  document.getElementById('cs-e-mode-b').checked = manual.includes('Mode B');
+  document.getElementById('cs-e-mode-c').checked = manual.includes('Mode C');
+  const autoOff = document.getElementById('cs-view-auto-toggle').classList.contains('off');
+  document.getElementById('cs-e-auto-toggle').classList.toggle('off', autoOff);
+  const mode2 = document.getElementById('cs-view-auto-mode').textContent.includes('Mode 2');
+  csSelectAutoMode(mode2 ? 2 : 1);
+}
+function openClawbackModal() {
+  clawbackPopulate();
+  document.getElementById('clawback-modal').classList.add('open');
+}
+function closeClawbackModal() {
+  document.getElementById('clawback-modal').classList.remove('open');
+}
+function resetClawbackModal() { clawbackPopulate(); }
+function submitClawbackModal() {
   const modes = [];
   if (document.getElementById('cs-e-mode-a').checked) modes.push('Mode A: Standard osp + accrued i');
   if (document.getElementById('cs-e-mode-b').checked) modes.push('Mode B: Standard osp only');
@@ -5532,31 +5492,27 @@ function csSaveEdit() {
   document.getElementById('cs-view-auto-toggle').classList.toggle('off', !autoOn);
   const mode1 = document.getElementById('cs-e-mode1-dot').classList.contains('on');
   document.getElementById('cs-view-auto-mode').textContent = mode1 ? 'Mode 1 (Accrued to Restructure Date)' : 'Mode 2 (Accrued to Pre-Completion)';
-  csCancelEdit();
+  closeClawbackModal();
   const t = document.getElementById('update-toast');
   if (t) { t.textContent = '✓ Clawback setting change submitted to Ticket Center — pending maker/checker approval'; t.classList.add('visible'); setTimeout(() => t.classList.remove('visible'), 3000); }
 }
-/* Lender Detail: after go-live only Days & Rate are live-editable (direct, no ticket). */
-function discStartEdit() {
+/* Lender Detail: after go-live only Days & Rate are live-editable (direct, no ticket), MODAL edit. */
+function openDiscModal() {
   const days = document.getElementById('disc-view-days').textContent.trim();
   const rate = document.getElementById('disc-view-rate').textContent.trim();
   document.querySelectorAll('input[name="disc-e-days"]').forEach(r => r.checked = (r.value === days));
   document.querySelectorAll('input[name="disc-e-rate"]').forEach(r => r.checked = (r.value === rate));
-  document.getElementById('disc-view-body').style.display = 'none';
-  document.getElementById('disc-edit-body').style.display = '';
-  document.getElementById('disc-edit-btn').style.display = 'none';
+  document.getElementById('disc-modal').classList.add('open');
 }
-function discCancelEdit() {
-  document.getElementById('disc-edit-body').style.display = 'none';
-  document.getElementById('disc-view-body').style.display = '';
-  document.getElementById('disc-edit-btn').style.display = '';
+function closeDiscModal() {
+  document.getElementById('disc-modal').classList.remove('open');
 }
-function discSaveEdit() {
+function saveDiscModal() {
   const days = ([...document.querySelectorAll('input[name="disc-e-days"]')].find(r => r.checked) || {}).value || 'Due to due';
   const rate = ([...document.querySelectorAll('input[name="disc-e-rate"]')].find(r => r.checked) || {}).value || 'Manual config';
   document.getElementById('disc-view-days').textContent = days;
   document.getElementById('disc-view-rate').textContent = rate;
-  discCancelEdit();
+  closeDiscModal();
   const t = document.getElementById('update-toast');
   if (t) { t.textContent = '✓ Discounting updated — Days & Rate saved (live-editable, no ticket)'; t.classList.add('visible'); setTimeout(() => t.classList.remove('visible'), 3000); }
 }
@@ -7263,6 +7219,78 @@ function spSubmit() {
 </div>
 
 <!-- SPV Edit Modal (global) -->
+<!-- Edit Discounting Setting Modal (Lender Detail) — only Days & Rate live-editable -->
+<div class="modal-overlay" id="disc-modal">
+  <div class="modal" style="width:520px;">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">Edit Discounting Setting</div>
+        <div class="modal-sub">Only Discounting Days & Rate are editable after go-live (live, no ticket). Other settings are locked.</div>
+      </div>
+      <button class="modal-close" onclick="closeDiscModal()">✕</button>
+    </div>
+    <div class="modal-body" style="padding:20px 24px;">
+      <div style="margin-bottom:20px;">
+        <div class="view-label" style="margin-bottom:8px;">Discounting Days <span style="font-size:10px;font-weight:600;color:#16A34A;background:#DCFCE7;padding:1px 7px;border-radius:4px;margin-left:4px;">Live editable</span></div>
+        <div style="display:flex;gap:22px;">
+          <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;"><input type="radio" name="disc-e-days" value="Due to due" checked style="accent-color:#2563EB;width:15px;height:15px;">Due to due</label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;"><input type="radio" name="disc-e-days" value="Calendar days" style="accent-color:#2563EB;width:15px;height:15px;">Calendar days</label>
+        </div>
+      </div>
+      <div>
+        <div class="view-label" style="margin-bottom:8px;">Discounting Rate <span style="font-size:10px;font-weight:600;color:#16A34A;background:#DCFCE7;padding:1px 7px;border-radius:4px;margin-left:4px;">Live editable</span></div>
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;"><input type="radio" name="disc-e-rate" value="Manual config" checked style="accent-color:#2563EB;width:15px;height:15px;">Manual config</label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;"><input type="radio" name="disc-e-rate" value="Monthly EIR by Tenor" style="accent-color:#2563EB;width:15px;height:15px;">Monthly EIR by Tenor</label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;"><input type="radio" name="disc-e-rate" value="Daily EIR by Tenor" style="accent-color:#2563EB;width:15px;height:15px;">Daily EIR by Tenor</label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer" style="padding:12px 24px;display:flex;justify-content:flex-end;gap:10px;">
+      <button class="btn-outline-sm" style="padding:8px 24px;font-size:13px;" onclick="closeDiscModal()">Cancel</button>
+      <button class="btn-primary-lg" style="font-size:13px;padding:8px 24px;" onclick="saveDiscModal()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Clawback Setting Modal (Lender Detail) — goes through maker/checker ticket -->
+<div class="modal-overlay" id="clawback-modal">
+  <div class="modal" style="width:640px;">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">Edit Clawback Setting</div>
+        <div class="modal-sub">Changes are submitted to Ticket Center for maker/checker approval.</div>
+      </div>
+      <button class="modal-close" onclick="closeClawbackModal()">✕</button>
+    </div>
+    <div class="modal-body" style="padding:20px 24px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px 48px;align-items:start;">
+        <div>
+          <div class="view-label" style="margin-bottom:10px;">Manual Clawback Mode <span class="req">*</span></div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#374151;cursor:pointer;"><input type="checkbox" id="cs-e-mode-a" checked style="accent-color:#2563EB;width:15px;height:15px;flex-shrink:0;" /><span><strong>Mode A:</strong> Standard osp + accrued i</span></label>
+            <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#374151;cursor:pointer;"><input type="checkbox" id="cs-e-mode-b" checked style="accent-color:#2563EB;width:15px;height:15px;flex-shrink:0;" /><span><strong>Mode B:</strong> Standard osp only</span></label>
+            <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#374151;cursor:pointer;"><input type="checkbox" id="cs-e-mode-c" style="accent-color:#2563EB;width:15px;height:15px;flex-shrink:0;" /><span><strong>Mode C:</strong> Custom effective date</span></label>
+          </div>
+        </div>
+        <div>
+          <div class="view-label" style="margin-bottom:8px;">Auto Clawback Enabled</div>
+          <div class="toggle" id="cs-e-auto-toggle" onclick="this.classList.toggle('off')"></div>
+          <div class="view-label" style="margin:16px 0 8px;">Auto Clawback Mode</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;" onclick="csSelectAutoMode(1)"><div class="radio-dot on" id="cs-e-mode1-dot" style="flex-shrink:0;"></div>Mode 1 (Accrued to Restructure Date)</label>
+            <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;" onclick="csSelectAutoMode(2)"><div class="radio-dot" id="cs-e-mode2-dot" style="flex-shrink:0;"></div>Mode 2 (Accrued to Pre-Completion)</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer" style="padding:12px 24px;display:flex;justify-content:flex-end;gap:10px;">
+      <button class="btn-outline-sm" style="padding:8px 24px;font-size:13px;" onclick="resetClawbackModal()">Reset</button>
+      <button class="btn-primary-lg" style="font-size:13px;padding:8px 24px;" onclick="submitClawbackModal()">Submit</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal-overlay" id="spv-edit-modal">
   <div class="modal" style="width:480px;">
     <div class="modal-header">
