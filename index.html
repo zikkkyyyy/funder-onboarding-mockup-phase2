@@ -2853,14 +2853,16 @@ tr.drag-over { border-top: 2px solid #2563EB; }
           </div>
           <!-- View mode -->
           <div class="view-section-body" id="cs-view-body">
-            <div style="display:grid;grid-template-columns:repeat(3,auto);gap:20px 48px;align-items:start;">
-              <div>
-                <div class="view-label" style="margin-bottom:8px;">Manual Clawback Mode</div>
-                <div style="display:flex;gap:8px;flex-wrap:wrap;" id="cs-view-manual">
-                  <span style="background:#DBEAFE;color:#1D4ED8;font-size:12px;font-weight:600;padding:3px 10px;border-radius:4px;">Mode A: Standard osp + accrued i</span>
-                  <span style="background:#DBEAFE;color:#1D4ED8;font-size:12px;font-weight:600;padding:3px 10px;border-radius:4px;">Mode B: Standard osp only</span>
-                </div>
+            <!-- Row 1: Manual Clawback -->
+            <div style="margin-bottom:22px;">
+              <div class="view-label" style="margin-bottom:8px;">Manual Clawback Mode</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;" id="cs-view-manual">
+                <span style="background:#DBEAFE;color:#1D4ED8;font-size:12px;font-weight:600;padding:3px 10px;border-radius:4px;">Mode A: Standard osp + accrued i</span>
+                <span style="background:#DBEAFE;color:#1D4ED8;font-size:12px;font-weight:600;padding:3px 10px;border-radius:4px;">Mode B: Standard osp only</span>
               </div>
+            </div>
+            <!-- Row 2: Auto Clawback -->
+            <div style="display:grid;grid-template-columns:repeat(2,auto);gap:20px 48px;align-items:start;justify-content:start;">
               <div>
                 <div class="view-label" style="margin-bottom:6px;">Auto Clawback Enabled</div>
                 <div class="toggle" style="pointer-events:none;" id="cs-view-auto-toggle"></div>
@@ -2870,7 +2872,6 @@ tr.drag-over { border-top: 2px solid #2563EB; }
                 <div style="font-size:13px;color:#374151;" id="cs-view-auto-mode">Mode 1 (Accrued to Restructure Date)</div>
               </div>
             </div>
-          </div>
         </div>
 
         <!-- Funder Fee Config -->
