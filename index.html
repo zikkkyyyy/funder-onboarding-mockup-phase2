@@ -999,13 +999,26 @@ tr.drag-over { border-top: 2px solid #2563EB; }
         <div id="disc-days-section" style="margin-bottom:20px;display:none;">
           <div class="pricing-group-label">Discounting Days <span class="req">*</span></div>
           <div class="radio-cards">
-            <div class="radio-card selected" onclick="discPickCard(this)">
+            <div class="radio-card selected" onclick="discSelectDaysType(this,'due')">
               <div class="radio-card-top"><div class="radio-dot on"></div><div class="radio-card-title">Due to due</div></div>
               <div class="radio-card-desc">Count between due dates</div>
             </div>
-            <div class="radio-card" onclick="discPickCard(this)">
+            <div class="radio-card" onclick="discSelectDaysType(this,'calendar')">
               <div class="radio-card-top"><div class="radio-dot"></div><div class="radio-card-title">Calendar days</div></div>
               <div class="radio-card-desc">Count calendar days</div>
+            </div>
+          </div>
+          <div id="disc-daytype-section" style="margin-top:14px;">
+            <div class="pricing-group-label">Due Day Type <span class="req">*</span></div>
+            <div class="radio-cards">
+              <div class="radio-card selected" onclick="discPickCard(this)">
+                <div class="radio-card-top"><div class="radio-dot on"></div><div class="radio-card-title">DPD 0</div></div>
+                <div class="radio-card-desc">Due date itself counts as day 0</div>
+              </div>
+              <div class="radio-card" onclick="discPickCard(this)">
+                <div class="radio-card-top"><div class="radio-dot"></div><div class="radio-card-title">DPD 1</div></div>
+                <div class="radio-card-desc">Due date itself counts as day 1</div>
+              </div>
             </div>
           </div>
         </div>
@@ -2851,6 +2864,10 @@ tr.drag-over { border-top: 2px solid #2563EB; }
               <div>
                 <div class="view-label" style="margin-bottom:4px;">Discounting Days <span style="font-size:10px;font-weight:600;color:#16A34A;background:#DCFCE7;padding:1px 7px;border-radius:4px;margin-left:4px;">Live editable</span></div>
                 <div style="font-size:13px;font-weight:600;color:#111827;" id="disc-view-days">Due to due</div>
+              </div>
+              <div>
+                <div class="view-label" style="margin-bottom:4px;">Due Day Type <span style="font-size:10px;font-weight:600;color:#16A34A;background:#DCFCE7;padding:1px 7px;border-radius:4px;margin-left:4px;">Live editable</span></div>
+                <div style="font-size:13px;font-weight:600;color:#111827;" id="disc-view-daytype">DPD 0</div>
               </div>
               <div>
                 <div class="view-label" style="margin-bottom:4px;">Discounting Rate <span style="font-size:10px;font-weight:600;color:#16A34A;background:#DCFCE7;padding:1px 7px;border-radius:4px;margin-left:4px;">Live editable</span></div>
@@ -5477,6 +5494,17 @@ function discSelectPriceMode(el, mode) {
   const days = document.getElementById('disc-days-section');
   if (days) days.style.display = (mode === 'daily') ? '' : 'none';
 }
+// Due Day Type (DPD 0 / DPD 1) only applies when Discounting Days = "Due to due".
+function discSelectDaysType(el, type) {
+  discPickCard(el);
+  const dt = document.getElementById('disc-daytype-section');
+  if (dt) dt.style.display = (type === 'due') ? '' : 'none';
+}
+function discModalDaysChange() {
+  const sel = document.querySelector('#disc-modal input[name="disc-e-days"]:checked');
+  const row = document.getElementById('disc-e-daytype-row');
+  if (row) row.style.display = (sel && sel.value === 'Due to due') ? '' : 'none';
+}
 /* Lender Detail: editing Support Discounting on a live/ready funder raises a ticket. */
 /* Clawback Setting (merged Manual + Auto Clawback) — Lender Detail, MODAL edit. */
 // N Input only applies to Auto Clawback Mode 2.
@@ -5526,8 +5554,12 @@ function submitClawbackModal() {
 function openDiscModal() {
   const days = document.getElementById('disc-view-days').textContent.trim();
   const rate = document.getElementById('disc-view-rate').textContent.trim();
+  const daytypeEl = document.getElementById('disc-view-daytype');
+  const daytype = (daytypeEl && daytypeEl.textContent.trim()) || 'DPD 0';
   document.querySelectorAll('input[name="disc-e-days"]').forEach(r => r.checked = (r.value === days));
   document.querySelectorAll('input[name="disc-e-rate"]').forEach(r => r.checked = (r.value === rate));
+  document.querySelectorAll('input[name="disc-e-daytype"]').forEach(r => r.checked = (r.value === daytype));
+  discModalDaysChange();
   document.getElementById('disc-modal').classList.add('open');
 }
 function closeDiscModal() {
@@ -5536,8 +5568,11 @@ function closeDiscModal() {
 function saveDiscModal() {
   const days = ([...document.querySelectorAll('input[name="disc-e-days"]')].find(r => r.checked) || {}).value || 'Due to due';
   const rate = ([...document.querySelectorAll('input[name="disc-e-rate"]')].find(r => r.checked) || {}).value || 'Monthly EIR by Tenor';
+  const daytype = ([...document.querySelectorAll('input[name="disc-e-daytype"]')].find(r => r.checked) || {}).value || 'DPD 0';
   document.getElementById('disc-view-days').textContent = days;
   document.getElementById('disc-view-rate').textContent = rate;
+  const dtView = document.getElementById('disc-view-daytype');
+  if (dtView) dtView.textContent = (days === 'Due to due') ? daytype : '—';
   closeDiscModal();
   const t = document.getElementById('update-toast');
   if (t) { t.textContent = '✓ Discounting updated — Days & Rate saved (live-editable, no ticket)'; t.classList.add('visible'); setTimeout(() => t.classList.remove('visible'), 3000); }
@@ -7192,8 +7227,15 @@ function spSubmit() {
       <div style="margin-bottom:20px;">
         <div class="view-label" style="margin-bottom:8px;">Discounting Days <span style="font-size:10px;font-weight:600;color:#16A34A;background:#DCFCE7;padding:1px 7px;border-radius:4px;margin-left:4px;">Live editable</span></div>
         <div style="display:flex;gap:22px;">
-          <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;"><input type="radio" name="disc-e-days" value="Due to due" checked style="accent-color:#2563EB;width:15px;height:15px;">Due to due</label>
-          <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;"><input type="radio" name="disc-e-days" value="Calendar days" style="accent-color:#2563EB;width:15px;height:15px;">Calendar days</label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;"><input type="radio" name="disc-e-days" value="Due to due" checked onchange="discModalDaysChange()" style="accent-color:#2563EB;width:15px;height:15px;">Due to due</label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;"><input type="radio" name="disc-e-days" value="Calendar days" onchange="discModalDaysChange()" style="accent-color:#2563EB;width:15px;height:15px;">Calendar days</label>
+        </div>
+        <div id="disc-e-daytype-row" style="margin-top:12px;">
+          <div class="view-label" style="margin-bottom:8px;">Due Day Type</div>
+          <div style="display:flex;gap:22px;">
+            <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;"><input type="radio" name="disc-e-daytype" value="DPD 0" checked style="accent-color:#2563EB;width:15px;height:15px;">DPD 0</label>
+            <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;"><input type="radio" name="disc-e-daytype" value="DPD 1" style="accent-color:#2563EB;width:15px;height:15px;">DPD 1</label>
+          </div>
         </div>
       </div>
       <div>
