@@ -154,8 +154,6 @@ document.addEventListener('DOMContentLoaded', () => {
 .radio-card { border: 2px solid #E5E7EB; border-radius: 10px; padding: 14px 18px; cursor: pointer; transition: all 0.15s; flex: 0 0 220px; }
 .radio-card.selected { border-color: #2563EB; background: #EFF6FF; }
 .radio-card:hover:not(.selected) { border-color: #93C5FD; }
-.radio-card.disabled { cursor: not-allowed; opacity: 0.5; background: #F9FAFB; }
-.radio-card.disabled:hover { border-color: #E5E7EB; }
 .radio-card-top { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
 .radio-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid #D1D5DB; flex-shrink: 0; position: relative; }
 .radio-dot.on { border-color: #2563EB; }
@@ -975,12 +973,12 @@ tr.drag-over { border-top: 2px solid #2563EB; }
         <div style="margin-bottom:20px;">
           <div class="pricing-group-label">Discounting Price Mode <span class="req">*</span></div>
           <div class="radio-cards">
-            <div class="radio-card selected" onclick="discSelectPriceMode(this,'instalment')">
-              <div class="radio-card-top"><div class="radio-dot on"></div><div class="radio-card-title">By instalment discount</div></div>
+            <div class="radio-card" onclick="discSelectPriceMode(this,'instalment')">
+              <div class="radio-card-top"><div class="radio-dot"></div><div class="radio-card-title">By instalment discount</div></div>
               <div class="radio-card-desc">Discount is applied per instalment</div>
             </div>
-            <div class="radio-card" onclick="discSelectPriceMode(this,'daily')">
-              <div class="radio-card-top"><div class="radio-dot"></div><div class="radio-card-title">By daily accrued</div></div>
+            <div class="radio-card selected" onclick="discSelectPriceMode(this,'daily')">
+              <div class="radio-card-top"><div class="radio-dot on"></div><div class="radio-card-title">By daily accrued</div></div>
               <div class="radio-card-desc">Discount is accrued day by day</div>
             </div>
           </div>
@@ -998,29 +996,16 @@ tr.drag-over { border-top: 2px solid #2563EB; }
         </div>
 
         <!-- Discounting Days (only applies when price mode = By daily accrued) -->
-        <div id="disc-days-section" style="margin-bottom:20px;display:none;">
+        <div id="disc-days-section" style="margin-bottom:20px;">
           <div class="pricing-group-label">Discounting Days <span class="req">*</span></div>
           <div class="radio-cards">
-            <div class="radio-card selected" onclick="discSelectDaysType(this,'due')">
+            <div class="radio-card selected" onclick="discPickCard(this)">
               <div class="radio-card-top"><div class="radio-dot on"></div><div class="radio-card-title">Due to due</div></div>
-              <div class="radio-card-desc">Count between due dates</div>
+              <div class="radio-card-desc">Count between due dates. Due date is fixed as end date 00:00:00 (DPD 0).</div>
             </div>
-            <div class="radio-card" onclick="discSelectDaysType(this,'calendar')">
+            <div class="radio-card" onclick="discPickCard(this)">
               <div class="radio-card-top"><div class="radio-dot"></div><div class="radio-card-title">Calendar days</div></div>
               <div class="radio-card-desc">Count calendar days</div>
-            </div>
-          </div>
-          <div id="disc-daytype-section" style="margin-top:14px;">
-            <div class="pricing-group-label">Due Day Type <span class="req">*</span></div>
-            <div class="radio-cards">
-              <div class="radio-card selected" onclick="discPickCard(this)">
-                <div class="radio-card-top"><div class="radio-dot on"></div><div class="radio-card-title">DPD 0</div></div>
-                <div class="radio-card-desc">Counting starts from the due date itself</div>
-              </div>
-              <div class="radio-card" onclick="discPickCard(this)">
-                <div class="radio-card-top"><div class="radio-dot"></div><div class="radio-card-title">DPD 1</div></div>
-                <div class="radio-card-desc">Counting starts from the day after the due date</div>
-              </div>
             </div>
           </div>
         </div>
@@ -1037,10 +1022,6 @@ tr.drag-over { border-top: 2px solid #2563EB; }
               <div class="radio-card-top"><div class="radio-dot"></div><div class="radio-card-title">Daily EIR by Tenor</div></div>
               <div class="radio-card-desc">Daily effective interest rate, per tenor</div>
             </div>
-            <div class="radio-card" onclick="discPickCard(this)">
-              <div class="radio-card-top"><div class="radio-dot"></div><div class="radio-card-title">Annual EIR by Tenor</div></div>
-              <div class="radio-card-desc">Annual effective interest rate, per tenor</div>
-            </div>
           </div>
         </div>
 
@@ -1051,10 +1032,6 @@ tr.drag-over { border-top: 2px solid #2563EB; }
             <div class="radio-card selected" onclick="discPickCard(this)">
               <div class="radio-card-top"><div class="radio-dot on"></div><div class="radio-card-title">Manual Config</div></div>
               <div class="radio-card-desc">Rate entered manually (from Funder Fee Config)</div>
-            </div>
-            <div class="radio-card disabled" title="Not available yet">
-              <div class="radio-card-top"><div class="radio-dot"></div><div class="radio-card-title">System Generate</div></div>
-              <div class="radio-card-desc">Rate is generated automatically by the system</div>
             </div>
           </div>
         </div>
@@ -2866,10 +2843,6 @@ tr.drag-over { border-top: 2px solid #2563EB; }
               <div>
                 <div class="view-label" style="margin-bottom:4px;">Discounting Days <span style="font-size:10px;font-weight:600;color:#16A34A;background:#DCFCE7;padding:1px 7px;border-radius:4px;margin-left:4px;">Live editable</span></div>
                 <div style="font-size:13px;font-weight:600;color:#111827;" id="disc-view-days">Due to due</div>
-              </div>
-              <div>
-                <div class="view-label" style="margin-bottom:4px;">Due Day Type <span style="font-size:10px;font-weight:600;color:#16A34A;background:#DCFCE7;padding:1px 7px;border-radius:4px;margin-left:4px;">Live editable</span></div>
-                <div style="font-size:13px;font-weight:600;color:#111827;" id="disc-view-daytype">DPD 0</div>
               </div>
               <div>
                 <div class="view-label" style="margin-bottom:4px;">Discounting Rate <span style="font-size:10px;font-weight:600;color:#16A34A;background:#DCFCE7;padding:1px 7px;border-radius:4px;margin-left:4px;">Live editable</span></div>
@@ -5496,17 +5469,6 @@ function discSelectPriceMode(el, mode) {
   const days = document.getElementById('disc-days-section');
   if (days) days.style.display = (mode === 'daily') ? '' : 'none';
 }
-// Due Day Type (DPD 0 / DPD 1) only applies when Discounting Days = "Due to due".
-function discSelectDaysType(el, type) {
-  discPickCard(el);
-  const dt = document.getElementById('disc-daytype-section');
-  if (dt) dt.style.display = (type === 'due') ? '' : 'none';
-}
-function discModalDaysChange() {
-  const sel = document.querySelector('#disc-modal input[name="disc-e-days"]:checked');
-  const row = document.getElementById('disc-e-daytype-row');
-  if (row) row.style.display = (sel && sel.value === 'Due to due') ? '' : 'none';
-}
 /* Lender Detail: editing Support Discounting on a live/ready funder raises a ticket. */
 /* Clawback Setting (merged Manual + Auto Clawback) — Lender Detail, MODAL edit. */
 // N Input only applies to Auto Clawback Mode 2.
@@ -5556,12 +5518,8 @@ function submitClawbackModal() {
 function openDiscModal() {
   const days = document.getElementById('disc-view-days').textContent.trim();
   const rate = document.getElementById('disc-view-rate').textContent.trim();
-  const daytypeEl = document.getElementById('disc-view-daytype');
-  const daytype = (daytypeEl && daytypeEl.textContent.trim()) || 'DPD 0';
   document.querySelectorAll('input[name="disc-e-days"]').forEach(r => r.checked = (r.value === days));
   document.querySelectorAll('input[name="disc-e-rate"]').forEach(r => r.checked = (r.value === rate));
-  document.querySelectorAll('input[name="disc-e-daytype"]').forEach(r => r.checked = (r.value === daytype));
-  discModalDaysChange();
   document.getElementById('disc-modal').classList.add('open');
 }
 function closeDiscModal() {
@@ -5570,11 +5528,8 @@ function closeDiscModal() {
 function saveDiscModal() {
   const days = ([...document.querySelectorAll('input[name="disc-e-days"]')].find(r => r.checked) || {}).value || 'Due to due';
   const rate = ([...document.querySelectorAll('input[name="disc-e-rate"]')].find(r => r.checked) || {}).value || 'Monthly EIR by Tenor';
-  const daytype = ([...document.querySelectorAll('input[name="disc-e-daytype"]')].find(r => r.checked) || {}).value || 'DPD 0';
   document.getElementById('disc-view-days').textContent = days;
   document.getElementById('disc-view-rate').textContent = rate;
-  const dtView = document.getElementById('disc-view-daytype');
-  if (dtView) dtView.textContent = (days === 'Due to due') ? daytype : '—';
   closeDiscModal();
   const t = document.getElementById('update-toast');
   if (t) { t.textContent = '✓ Discounting updated — Days & Rate saved (live-editable, no ticket)'; t.classList.add('visible'); setTimeout(() => t.classList.remove('visible'), 3000); }
@@ -7229,15 +7184,8 @@ function spSubmit() {
       <div style="margin-bottom:20px;">
         <div class="view-label" style="margin-bottom:8px;">Discounting Days <span style="font-size:10px;font-weight:600;color:#16A34A;background:#DCFCE7;padding:1px 7px;border-radius:4px;margin-left:4px;">Live editable</span></div>
         <div style="display:flex;gap:22px;">
-          <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;"><input type="radio" name="disc-e-days" value="Due to due" checked onchange="discModalDaysChange()" style="accent-color:#2563EB;width:15px;height:15px;">Due to due</label>
-          <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;"><input type="radio" name="disc-e-days" value="Calendar days" onchange="discModalDaysChange()" style="accent-color:#2563EB;width:15px;height:15px;">Calendar days</label>
-        </div>
-        <div id="disc-e-daytype-row" style="margin-top:12px;">
-          <div class="view-label" style="margin-bottom:8px;">Due Day Type</div>
-          <div style="display:flex;gap:22px;">
-            <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;"><input type="radio" name="disc-e-daytype" value="DPD 0" checked style="accent-color:#2563EB;width:15px;height:15px;">DPD 0</label>
-            <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;"><input type="radio" name="disc-e-daytype" value="DPD 1" style="accent-color:#2563EB;width:15px;height:15px;">DPD 1</label>
-          </div>
+          <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;"><input type="radio" name="disc-e-days" value="Due to due" checked style="accent-color:#2563EB;width:15px;height:15px;">Due to due</label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;"><input type="radio" name="disc-e-days" value="Calendar days" style="accent-color:#2563EB;width:15px;height:15px;">Calendar days</label>
         </div>
       </div>
       <div>
@@ -7245,7 +7193,6 @@ function spSubmit() {
         <div style="display:flex;flex-direction:column;gap:9px;">
           <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;"><input type="radio" name="disc-e-rate" value="Monthly EIR by Tenor" checked style="accent-color:#2563EB;width:15px;height:15px;">Monthly EIR by Tenor</label>
           <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;"><input type="radio" name="disc-e-rate" value="Daily EIR by Tenor" style="accent-color:#2563EB;width:15px;height:15px;">Daily EIR by Tenor</label>
-          <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;"><input type="radio" name="disc-e-rate" value="Annual EIR by Tenor" style="accent-color:#2563EB;width:15px;height:15px;">Annual EIR by Tenor</label>
         </div>
       </div>
     </div>
