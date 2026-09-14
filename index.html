@@ -154,6 +154,8 @@ document.addEventListener('DOMContentLoaded', () => {
 .radio-card { border: 2px solid #E5E7EB; border-radius: 10px; padding: 14px 18px; cursor: pointer; transition: all 0.15s; flex: 0 0 220px; }
 .radio-card.selected { border-color: #2563EB; background: #EFF6FF; }
 .radio-card:hover:not(.selected) { border-color: #93C5FD; }
+.radio-card.disabled { cursor: not-allowed; opacity: 0.5; background: #F9FAFB; }
+.radio-card.disabled:hover { border-color: #E5E7EB; }
 .radio-card-top { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
 .radio-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid #D1D5DB; flex-shrink: 0; position: relative; }
 .radio-dot.on { border-color: #2563EB; }
@@ -1050,7 +1052,7 @@ tr.drag-over { border-top: 2px solid #2563EB; }
               <div class="radio-card-top"><div class="radio-dot on"></div><div class="radio-card-title">Manual Config</div></div>
               <div class="radio-card-desc">Rate entered manually (from Funder Fee Config)</div>
             </div>
-            <div class="radio-card" onclick="discPickCard(this)">
+            <div class="radio-card disabled" title="Not available yet">
               <div class="radio-card-top"><div class="radio-dot"></div><div class="radio-card-title">System Generate</div></div>
               <div class="radio-card-desc">Rate is generated automatically by the system</div>
             </div>
