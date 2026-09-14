@@ -2841,11 +2841,11 @@ tr.drag-over { border-top: 2px solid #2563EB; }
                 <div style="font-size:11px;color:#9CA3AF;margin-top:5px;">Auto Clawback adopts the same method as Clawback.</div>
               </div>
               <div>
-                <div class="view-label" style="margin-bottom:4px;">Discounting Days <span style="font-size:10px;font-weight:600;color:#16A34A;background:#DCFCE7;padding:1px 7px;border-radius:4px;margin-left:4px;">Live editable</span></div>
+                <div class="view-label" style="margin-bottom:4px;">Discounting Days <span style="font-size:10px;font-weight:600;color:#16A34A;background:#DCFCE7;padding:1px 7px;border-radius:4px;margin-left:4px;">Editable via ticket</span></div>
                 <div style="font-size:13px;font-weight:600;color:#111827;" id="disc-view-days">Due to due</div>
               </div>
               <div>
-                <div class="view-label" style="margin-bottom:4px;">Discounting Rate <span style="font-size:10px;font-weight:600;color:#16A34A;background:#DCFCE7;padding:1px 7px;border-radius:4px;margin-left:4px;">Live editable</span></div>
+                <div class="view-label" style="margin-bottom:4px;">Discounting Rate <span style="font-size:10px;font-weight:600;color:#16A34A;background:#DCFCE7;padding:1px 7px;border-radius:4px;margin-left:4px;">Editable via ticket</span></div>
                 <div style="font-size:13px;font-weight:600;color:#111827;" id="disc-view-rate">Monthly EIR by Tenor</div>
               </div>
               <div>
@@ -5532,7 +5532,7 @@ function saveDiscModal() {
   document.getElementById('disc-view-rate').textContent = rate;
   closeDiscModal();
   const t = document.getElementById('update-toast');
-  if (t) { t.textContent = '✓ Discounting updated — Days & Rate saved (live-editable, no ticket)'; t.classList.add('visible'); setTimeout(() => t.classList.remove('visible'), 3000); }
+  if (t) { t.textContent = '✓ Discounting update submitted to Ticket Center — pending maker/checker approval'; t.classList.add('visible'); setTimeout(() => t.classList.remove('visible'), 3000); }
 }
 function discPickCard(el) {
   if (el.style.cursor === 'not-allowed') return; // disabled option (e.g. Interest rate TBC)
@@ -7176,20 +7176,20 @@ function spSubmit() {
     <div class="modal-header">
       <div>
         <div class="modal-title">Edit Discounting Setting</div>
-        <div class="modal-sub">Only Discounting Days & Rate are editable after go-live (live, no ticket). Other settings are locked.</div>
+        <div class="modal-sub">Only Discounting Days & Rate can still be changed after go-live — updates go through Ticket Center (maker-checker approval required). Other settings are locked.</div>
       </div>
       <button class="modal-close" onclick="closeDiscModal()">✕</button>
     </div>
     <div class="modal-body" style="padding:20px 24px;">
       <div style="margin-bottom:20px;">
-        <div class="view-label" style="margin-bottom:8px;">Discounting Days <span style="font-size:10px;font-weight:600;color:#16A34A;background:#DCFCE7;padding:1px 7px;border-radius:4px;margin-left:4px;">Live editable</span></div>
+        <div class="view-label" style="margin-bottom:8px;">Discounting Days <span style="font-size:10px;font-weight:600;color:#16A34A;background:#DCFCE7;padding:1px 7px;border-radius:4px;margin-left:4px;">Editable via ticket</span></div>
         <div style="display:flex;gap:22px;">
           <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;"><input type="radio" name="disc-e-days" value="Due to due" checked style="accent-color:#2563EB;width:15px;height:15px;">Due to due</label>
           <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;"><input type="radio" name="disc-e-days" value="Calendar days" style="accent-color:#2563EB;width:15px;height:15px;">Calendar days</label>
         </div>
       </div>
       <div>
-        <div class="view-label" style="margin-bottom:8px;">Discounting Rate <span style="font-size:10px;font-weight:600;color:#16A34A;background:#DCFCE7;padding:1px 7px;border-radius:4px;margin-left:4px;">Live editable</span></div>
+        <div class="view-label" style="margin-bottom:8px;">Discounting Rate <span style="font-size:10px;font-weight:600;color:#16A34A;background:#DCFCE7;padding:1px 7px;border-radius:4px;margin-left:4px;">Editable via ticket</span></div>
         <div style="display:flex;flex-direction:column;gap:9px;">
           <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;"><input type="radio" name="disc-e-rate" value="Monthly EIR by Tenor" checked style="accent-color:#2563EB;width:15px;height:15px;">Monthly EIR by Tenor</label>
           <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;cursor:pointer;"><input type="radio" name="disc-e-rate" value="Daily EIR by Tenor" style="accent-color:#2563EB;width:15px;height:15px;">Daily EIR by Tenor</label>
@@ -7198,7 +7198,7 @@ function spSubmit() {
     </div>
     <div class="modal-footer" style="padding:12px 24px;display:flex;justify-content:flex-end;gap:10px;">
       <button class="btn-outline-sm" style="padding:8px 24px;font-size:13px;" onclick="closeDiscModal()">Cancel</button>
-      <button class="btn-primary-lg" style="font-size:13px;padding:8px 24px;" onclick="saveDiscModal()">Save</button>
+      <button class="btn-primary-lg" style="font-size:13px;padding:8px 24px;" onclick="saveDiscModal()">Submit</button>
     </div>
   </div>
 </div>
