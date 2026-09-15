@@ -957,14 +957,16 @@ tr.drag-over { border-top: 2px solid #2563EB; }
         <div class="toggle" id="disc-toggle" onclick="toggleDiscounting(this)"></div>
       </div>
       <div class="section-body" id="disc-config">
-        <!-- Discounting Scope (fixed, not a BD-configurable choice) -->
+        <!-- Discounting Scope -->
         <div class="form-group" style="margin-bottom:20px;">
-          <label class="form-label">Discounting Scope</label>
-          <div style="display:flex;align-items:center;gap:8px;margin-top:8px;">
-            <span style="font-size:13px;font-weight:500;color:#374151;">0 interest loan</span>
-            <span style="font-size:10px;font-weight:600;color:#6B7280;background:#F3F4F6;padding:1px 7px;border-radius:4px;">Fixed</span>
+          <label class="form-label">Discounting Scope <span class="req">*</span></label>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px;">
+            <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#374151;cursor:pointer;">
+              <input type="checkbox" id="disc-scope-zero" checked onchange="onDiscScopeChange(this)" style="accent-color:#2563EB;width:15px;height:15px;flex-shrink:0;" />
+              <span>0 interest loan</span>
+            </label>
           </div>
-          <div class="field-note">Only one scope is supported currently; new scopes require a new requirement.</div>
+          <div id="disc-scope-err" style="display:none;color:#DC2626;font-size:12px;margin-top:6px;">At least one scope must be selected.</div>
         </div>
 
         <!-- Discounting Price Mode -->
@@ -5449,8 +5451,13 @@ function toggleDiscounting(el) {
   const cfg = document.getElementById('disc-config');
   if (cfg) cfg.classList.toggle('dimmed', !on);
 }
-// Scenario is a required group — at least one box must stay checked.
+// Scope & Scenario are required groups — at least one box must stay checked.
 // Unchecking all shows an inline error (rather than silently turning discounting off).
+function onDiscScopeChange() {
+  const any = document.getElementById('disc-scope-zero')?.checked;
+  const err = document.getElementById('disc-scope-err');
+  if (err) err.style.display = any ? 'none' : '';
+}
 function onDiscScenarioChange() {
   const any = [...document.querySelectorAll('.disc-scenario-chk')].some(b => b.checked);
   const err = document.getElementById('disc-scenario-err');
